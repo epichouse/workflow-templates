@@ -3,9 +3,6 @@ name: Template - Deploy Playbook
 on:
   workflow_call:
     inputs:
-      secrets:
-        GITHUB_TOKEN:
-          required: true
       branch:
         required: true
         type: string
