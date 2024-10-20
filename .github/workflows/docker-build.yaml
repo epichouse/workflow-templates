@@ -6,6 +6,9 @@ on:
       docker_env:
         required: true
         type: string
+      docker_token:
+        required: true
+        type: string
 jobs:
   build:
     runs-on: self-hosted
@@ -15,7 +18,7 @@ jobs:
       - name: Build Docker Image
         run: docker image build . -t danshaw509/epichouse.dashy:${{ github.sha }}
       - name: Login to DockerHub
-        run: docker login -u danshaw509 -p ${{ secrets.DOCKERTOKEN }}
+        run: docker login -u danshaw509 -p ${{ inputs.docker_token }}
       - name: Push Docker Image with Commit Tag
         run: docker push danshaw509/epichouse.dashy:${{ github.sha }}
       - name: Create Docker Image
