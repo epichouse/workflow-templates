@@ -6,8 +6,21 @@ on:
       docker_env:
         required: true
         type: string
+      docker_server:
+        required: true
+        type: string
+      docker_image:
+        required: true
+        type: string
+      docker_path:
+        required: true
+        type: string
     secrets:
       dockerhub_token:
+        required: true
+      dockerhub_username:
+        required: true
+      server_username:
         required: true
 jobs:
   build:
@@ -16,15 +29,20 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v4
       - name: Build Docker Image
-        run: docker image build . -t danshaw509/epichouse.dashy:${{ github.sha }}
+        run: docker image build . -t ${{ secrets.dockerhub_username }}/${{ inputs.docker_image }}:${{ github.sha }}
       - name: Login to DockerHub
         uses: docker/login-action@v3
         with:
-          username: danshaw509
+          username: ${{ secrets.dockerhub_username }}
           password: ${{ secrets.dockerhub_token }}
       - name: Push Docker Image with Commit Tag
-        run: docker push danshaw509/epichouse.dashy:${{ github.sha }}
+        run: docker push ${{ secrets.dockerhub_username }}/${{ inputs.docker_image }}:${{ github.sha }}
       - name: Create Docker Image
-        run: docker tag danshaw509/epichouse.dashy:${{ github.sha }} danshaw509/epichouse.dashy:${{ inputs.docker_env }}
+        run: docker tag ${{ secrets.dockerhub_username }}/${{ inputs.docker_image }}:${{ github.sha }} ${{ secrets.dockerhub_username }}/${{ inputs.docker_image }}:${{ inputs.docker_env }}
       - name: Push Docker Image with Tag
-        run: docker push danshaw509/epichouse.dashy:${{ inputs.docker_env }}
+        run: docker push ${{ secrets.dockerhub_username }}/${{ inputs.docker_image }}:${{ inputs.docker_env }}
+  deploy:
+    runs-on: self-hosted
+    steps:
+      - name: Pull Image on Server
+        run: ssh  -o "StrictHostKeyChecking no" ${{ secrets.server_username }}@${{ inputs.docker_server }} "cd /srv/docker/apps/${{ vars.docker_path }} && docker compose down && docker compose pull && docker compose up -d"
