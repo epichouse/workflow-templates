@@ -22,8 +22,8 @@ on:
         required: true
       server_username:
         required: true
-      GITHUB_TOKEN:
-        required: true
+      #GITHUB_TOKEN:
+      #  required: true
 jobs:
   build:
     runs-on: self-hosted
