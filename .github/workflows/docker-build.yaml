@@ -22,8 +22,7 @@ on:
         required: true
       server_username:
         required: true
-      GITHUB_TOKEN1:
-        required: true
+
 jobs:
   build:
     runs-on: self-hosted
@@ -40,13 +39,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN1 }}
-      - name: Build and push Docker image with commit id
-        uses: docker/build-push-action@v5
-        with:
-          push: true
-          tags: ghcr.io/${{ github.repository }}:${{ github.sha }}
-          file: ./dockerfile  # Path to the Dockerfile
+          password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build and push Docker image with env tag
         uses: docker/build-push-action@v5
         with:
