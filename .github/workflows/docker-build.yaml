@@ -38,12 +38,12 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN1 }}
-      - name: Build and push Docker image with commit id
-        uses: docker/build-push-action@v5
-        with:
-          push: true
-          tags: ghcr.io/${{ github.repository }}/dashy:${{ github.sha }}
-          file: ./dockerfile  # Path to the Dockerfile
+#      - name: Build and push Docker image with commit id
+#        uses: docker/build-push-action@v5
+#        with:
+#          push: true
+#          tags: ghcr.io/${{ github.repository }}/dashy:${{ github.sha }}
+#          file: ./dockerfile  # Path to the Dockerfile
       - name: Build and push Docker image with env tag
         uses: docker/build-push-action@v5
         with:
