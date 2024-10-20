@@ -45,4 +45,4 @@ jobs:
     runs-on: self-hosted
     steps:
       - name: Pull Image on Server
-        run: ssh  -o "StrictHostKeyChecking no" ${{ secrets.server_username }}@${{ inputs.docker_server }} "cd /srv/docker/apps/${{ vars.docker_path }} && docker compose down && docker compose pull && docker compose up -d"
+        run: ssh  -o "StrictHostKeyChecking no" ${{ secrets.server_username }}@${{ inputs.docker_server }} "cd ${{ inputs.docker_path }} && docker compose down && docker compose pull && docker compose up -d"
