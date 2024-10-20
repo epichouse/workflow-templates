@@ -48,7 +48,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: true
-          tags: ghcr.io/${{ github.repository }}/dashy:${{ inputs.docker_env }}
+          tags: ghcr.io/${{ github.repository }}:${{ inputs.docker_env }}
           file: ./dockerfile  # Path to the Dockerfile
   deploy:
     runs-on: self-hosted
