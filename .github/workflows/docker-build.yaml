@@ -22,8 +22,8 @@ on:
         required: true
       server_username:
         required: true
-      #GITHUB_TOKEN:
-      #  required: true
+      GITHUB_TOKEN1:
+        required: true
 jobs:
   build:
     runs-on: self-hosted
@@ -37,7 +37,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.GITHUB_TOKEN1 }}
       - name: Build and push Docker image with commit id
         uses: docker/build-push-action@v5
         with:
