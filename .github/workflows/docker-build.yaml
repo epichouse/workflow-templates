@@ -43,6 +43,7 @@ jobs:
         run: docker push ${{ secrets.dockerhub_username }}/${{ inputs.docker_image }}:${{ inputs.docker_env }}
   deploy:
     runs-on: self-hosted
+    needs: build
     steps:
       - name: Pull Image on Server
         run: ssh  -o "StrictHostKeyChecking no" ${{ secrets.server_username }}@${{ inputs.docker_server }} "cd ${{ inputs.docker_path }} && docker compose down && docker compose pull && docker compose up -d"
