@@ -7,7 +7,7 @@ on:
         required: true
         type: string
     secrets:
-      docker_token:
+      DOCKERTOKEN:
         required: true
 jobs:
   build:
@@ -18,7 +18,7 @@ jobs:
       - name: Build Docker Image
         run: docker image build . -t danshaw509/epichouse.dashy:${{ github.sha }}
       - name: Login to DockerHub
-        run: docker login -u danshaw509 -p ${{ secrets.docker_token }}
+        run: docker login -u danshaw509 -p ${{ secrets.DOCKERTOKEN }}
       - name: Push Docker Image with Commit Tag
         run: docker push danshaw509/epichouse.dashy:${{ github.sha }}
       - name: Create Docker Image
