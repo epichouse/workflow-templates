@@ -1,0 +1,24 @@
+name: Template - Build & Publish Docker Image
+
+on:
+  workflow_call:
+    inputs:
+      docker_env:
+        required: true
+        type: string
+jobs:
+  build:
+    runs-on: self-hosted
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - name: Build Docker Image
+        run: docker image build . -t danshaw509/epichouse.dashy:${{ github.sha }}
+      - name: Login to DockerHub
+        run: docker login -u danshaw509 -p ${{ secrets.DOCKERTOKEN }}
+      - name: Push Docker Image with Commit Tag
+        run: docker push danshaw509/epichouse.dashy:${{ github.sha }}
+      - name: Create Docker Image
+        run: docker tag danshaw509/epichouse.dashy:${{ github.sha }} danshaw509/epichouse.dashy:${{ inputs.docker_env }}
+      - name: Push Docker Image with Tag
+        run: docker push danshaw509/epichouse.dashy:${{ inputs.docker_env }}
