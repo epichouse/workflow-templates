@@ -32,10 +32,10 @@ jobs:
           ref: 'main'
       - name: Checkout Repository (ansible-servers)
         uses: actions/checkout@v4
+        if: ${{ inputs.roletype }} == 'server'
         with:
           path: ansible-servers
           repository: 'epichouse/ansible-servers.git'
           ref: 'main'
-        if: ${{ inputs.roletype }} == 'server'
       - name: Run Playbook
         run: ansible-playbook playbooks/${{ inputs.playbook }}.yml --extra-vars "ansible_sudo_pass=${{ secrets.SUDO_PASSWORD }}, rolename=${{ inputs.rolename }} roletype=${{ inputs.roletype }}"
