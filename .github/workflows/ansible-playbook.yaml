@@ -24,11 +24,18 @@ jobs:
       run:
         working-directory: ./ansible-core
     steps:
-      - name: Checkout Repository
+      - name: Checkout Repository (ansible-core)
         uses: actions/checkout@v4
         with:
           path: ansible-core
           repository: 'epichouse/ansible-core.git'
           ref: 'main'
+      - name: Checkout Repository (ansible-servers)
+        uses: actions/checkout@v4
+        with:
+          path: ansible-servers
+          repository: 'epichouse/ansible-servers.git'
+          ref: 'main'
+        if: ${{ inputs.roletype }} == 'server'
       - name: Run Playbook
         run: ansible-playbook playbooks/${{ inputs.playbook }}.yml --extra-vars "ansible_sudo_pass=${{ secrets.SUDO_PASSWORD }}, rolename=${{ inputs.rolename }} roletype=${{ inputs.roletype }}"
