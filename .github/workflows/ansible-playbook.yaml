@@ -39,5 +39,12 @@ jobs:
           repository: 'epichouse/ansible-servers.git'
           ref: 'main'
           token: ${{secrets.mastertoken}}
+      - name: Checkout Repository (bash)
+        uses: actions/checkout@v4
+        with:
+          path: bash
+          repository: 'epichouse/bash.git'
+          ref: 'main'
+          token: ${{secrets.mastertoken}}
       - name: Run Playbook
         run: ansible-playbook playbooks/${{ inputs.playbook }}.yml --extra-vars "ansible_sudo_pass=${{ secrets.SUDO_PASSWORD }}, rolename=${{ inputs.rolename }} roletype=${{ inputs.roletype }}"
