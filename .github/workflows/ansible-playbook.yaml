@@ -19,7 +19,7 @@ on:
       mastertoken:
 
 jobs:
-  Ansible:
+  Execute-Playbook:
     runs-on: self-hosted
     defaults:
       run:
