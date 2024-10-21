@@ -3,17 +3,13 @@ name: Template - Deploy Playbook
 on:
   workflow_call:
     inputs:
-      branch:
-        required: true
-        type: string
-        default: 'main'
       playbook: 
         required: true
         type: string
+        description: ansible playbook to be executed
       rolename:
         type: string
-      roletype:
-        type: string
+        description: non-mandatory variable used for playbooks that deploy a specific role.
     secrets:
       sudo_password:  
       mastertoken:
@@ -47,4 +43,4 @@ jobs:
           ref: 'main'
           token: ${{secrets.mastertoken}}
       - name: Run Playbook
-        run: ansible-playbook playbooks/${{ inputs.playbook }}.yml --extra-vars "ansible_sudo_pass=${{ secrets.SUDO_PASSWORD }}, rolename=${{ inputs.rolename }} roletype=${{ inputs.roletype }}"
+        run: ansible-playbook playbooks/${{ inputs.playbook }}.yml --extra-vars "ansible_sudo_pass=${{ secrets.SUDO_PASSWORD }}, rolename=${{ inputs.rolename }}"
