@@ -16,6 +16,7 @@ on:
         type: string
     secrets:
       sudo_password:  
+      mastertoken:
 
 jobs:
   Ansible:
@@ -30,6 +31,7 @@ jobs:
           path: ansible-core
           repository: 'epichouse/ansible-core.git'
           ref: 'main'
+          token: ${{secrets.mastertoken}}
       - name: Checkout Repository (ansible-servers)
         uses: actions/checkout@v4
         if: ${{ inputs.roletype }} == 'server'
@@ -37,6 +39,6 @@ jobs:
           path: ansible-servers
           repository: 'epichouse/ansible-servers.git'
           ref: 'main'
-          token: ${{secrets.GITHUB_TOKEN}}
+          token: ${{secrets.mastertoken}}
       - name: Run Playbook
         run: ansible-playbook playbooks/${{ inputs.playbook }}.yml --extra-vars "ansible_sudo_pass=${{ secrets.SUDO_PASSWORD }}, rolename=${{ inputs.rolename }} roletype=${{ inputs.roletype }}"
