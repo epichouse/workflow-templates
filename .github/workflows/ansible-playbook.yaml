@@ -45,7 +45,8 @@ jobs:
       - name: Run Playbook
         uses: dawidd6/action-ansible-playbook@v2.8.0
         with:
-          playbook: ${{ github.workspace }}/playbooks/${{ inputs.playbook }}.yml
+          playbook: playbooks/${{ inputs.playbook }}.yml
+          directory: ${{ github.workspace }}/ansible-core/
           #key: ${{secrets.SSH_PRIVATE_KEY}} - this would be a good improvement, then the runner doesn't need to be provisioned in advance.
           options: |
             --extra-vars ansible_sudo_pass=${{ secrets.SUDO_PASSWORD }}
