@@ -9,9 +9,6 @@ on:
       docker_server:
         required: true
         type: string
-      docker_image:
-        required: true
-        type: string
       docker_path:
         required: true
         type: string
