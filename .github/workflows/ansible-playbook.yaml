@@ -46,7 +46,7 @@ jobs:
         uses: aimerib/ansible-playwright@v2.7.7
         with:
           playbook: ${{ inputs.playbook }}.yml
-          directory: playbooks/
+          directory: ./playbooks/
           #key: ${{secrets.SSH_PRIVATE_KEY}} - this would be a good improvement, then the runner doesn't need to be provisioned in advance.
           options: |
             --extra-vars ansible_sudo_pass=${{ secrets.SUDO_PASSWORD }}
