@@ -43,7 +43,7 @@ jobs:
           ref: 'main'
           token: ${{secrets.mastertoken}}
       - name: Run Playbook
-        uses: aimerib/ansible-playwright@v2.7.7
+        uses: dawidd6/action-ansible-playbook@v2.8.0
         with:
           playbook: playbooks/${{ inputs.playbook }}.yml
           #key: ${{secrets.SSH_PRIVATE_KEY}} - this would be a good improvement, then the runner doesn't need to be provisioned in advance.
