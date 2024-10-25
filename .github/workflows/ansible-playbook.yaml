@@ -26,39 +26,13 @@ jobs:
         with:
           path: ansible-core
           repository: 'epichouse/ansible-core.git'
-          ref: 'main'
           token: ${{secrets.mastertoken}}
-        if: ${{github.repository != 'epichouse/ansible-core'}}
       - name: Checkout Repository (ansible-servers)
         uses: actions/checkout@v4
         with:
           path: ansible-servers
           repository: 'epichouse/ansible-servers.git'
-          ref: 'main'
           token: ${{secrets.mastertoken}}
-        if: ${{github.repository != 'epichouse/ansible-servers'}}
-      - name: Checkout Repository (ansible-core)
-        uses: actions/checkout@v4
-        with:
-          path: ansible-core
-          repository: 'epichouse/ansible-core.git'
-          ref: ${{ github.ref_name }}
-          token: ${{secrets.mastertoken}}
-        if: ${{github.repository == 'epichouse/ansible-core'}}
-      - name: Checkout Repository (ansible-servers)
-        uses: actions/checkout@v4
-        with:
-          path: ansible-servers
-          repository: 'epichouse/ansible-servers.git'
-          ref: ${{ github.ref_name }}
-          token: ${{secrets.mastertoken}}
-        if: ${{github.repository == 'epichouse/ansible-servers'}}
-
-
-
-
-
-
       - name: Checkout Repository (bash)
         uses: actions/checkout@v4
         with:
