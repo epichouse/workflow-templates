@@ -25,9 +25,6 @@ jobs:
     permissions:
       contents: read
       packages: write
-    defaults:
-      run:
-        working-directory: docker-images/${{ inputs.docker_project }}/
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
@@ -44,7 +41,7 @@ jobs:
         with:
           push: true
           tags: ghcr.io/${{ github.repository }}/${{inputs.docker_project}}:${{ inputs.docker_env }}
-          file: dockerfile  # Path to the Dockerfile
+          file: ./${{ inputs.docker_project }}/dockerfile  # Path to the Dockerfile
   deploy:
     runs-on: self-hosted
     needs: build
