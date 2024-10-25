@@ -27,7 +27,7 @@ jobs:
       packages: write
     defaults:
       run:
-        working-directory: ./docker-images/${{ inputs.docker_project }}/
+        working-directory: docker-images/${{ inputs.docker_project }}/
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
