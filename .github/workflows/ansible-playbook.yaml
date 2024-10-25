@@ -25,19 +25,19 @@ jobs:
         uses: actions/checkout@v4
         with:
           path: ansible-core
-          repository: 'epichouse/ansible-core.git'
+          repository: 'epichouse/ansible-core'
           token: ${{secrets.mastertoken}}
       - name: Checkout Repository (ansible-servers)
         uses: actions/checkout@v4
         with:
           path: ansible-servers
-          repository: 'epichouse/ansible-servers.git'
+          repository: 'epichouse/ansible-servers'
           token: ${{secrets.mastertoken}}
       - name: Checkout Repository (bash)
         uses: actions/checkout@v4
         with:
           path: bash
-          repository: 'epichouse/bash.git'
+          repository: 'epichouse/bash'
           ref: 'main'
           token: ${{secrets.mastertoken}}
       - name: Run Playbook (Check Only)
