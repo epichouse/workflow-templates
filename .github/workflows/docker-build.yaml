@@ -43,8 +43,8 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: true
-          tags: ghcr.io/${{ github.repository }}:${{ inputs.docker_env }}
-          file: ./dockerfile  # Path to the Dockerfile
+          tags: ghcr.io/${{ github.repository }}/${{inputs.docker_project}}:${{ inputs.docker_env }}
+          file: dockerfile  # Path to the Dockerfile
   deploy:
     runs-on: self-hosted
     needs: build
