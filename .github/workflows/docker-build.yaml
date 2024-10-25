@@ -41,8 +41,8 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build and push Docker image with env tag
         uses: docker/build-push-action@v5
-        context: "{{defaultContext}}:${{ inputs.docker_project }}"
         with:
+          context: "{{defaultContext}}:${{ inputs.docker_project }}"
           push: true
           tags: ghcr.io/${{ github.repository }}/${{inputs.docker_project}}:${{ inputs.docker_env }}
           file: ./dockerfile  # Path to the Dockerfile
