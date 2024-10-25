@@ -22,22 +22,23 @@ jobs:
         working-directory: ansible-core/
     steps:
       - name: Checkout Repository (ansible-core)
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           path: ansible-core
           repository: 'epichouse/ansible-core.git'
           token: ${{secrets.mastertoken}}
       - name: Checkout Repository (ansible-servers)
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           path: ansible-servers
           repository: 'epichouse/ansible-servers.git'
           token: ${{secrets.mastertoken}}
       - name: Checkout Repository (bash)
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           path: bash
           repository: 'epichouse/bash.git'
+          ref: 'main'
           token: ${{secrets.mastertoken}}
       - name: Run Playbook (Check Only)
         if: github.ref != 'refs/heads/main'
