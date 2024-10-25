@@ -33,6 +33,7 @@ jobs:
           path: ansible-servers
           repository: 'epichouse/ansible-servers'
           token: ${{secrets.mastertoken}}
+        if: ${{github.repository == 'epichouse/ansible-servers'}}
       - name: Checkout Repository (bash)
         uses: actions/checkout@v4
         with:
