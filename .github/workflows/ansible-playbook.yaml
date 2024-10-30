@@ -32,9 +32,5 @@ jobs:
           repository: 'epichouse/bash'
           ref: 'main'
           token: ${{secrets.mastertoken}}
-      - name: Run Playbook (Check Only)
-        if: github.ref != 'refs/heads/main'
-        run: ansible-playbook playbooks/${{ inputs.playbook }}.yml --extra-vars "ansible_sudo_pass=${{ secrets.SUDO_PASSWORD }}, rolename=${{ inputs.rolename }}" --check
       - name: Run Playbook
-        if: github.ref == 'refs/heads/main'
         run: ansible-playbook playbooks/${{ inputs.playbook }}.yml --extra-vars "ansible_sudo_pass=${{ secrets.SUDO_PASSWORD }}, rolename=${{ inputs.rolename }}"
