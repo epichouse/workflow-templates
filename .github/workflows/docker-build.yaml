@@ -51,4 +51,4 @@ jobs:
     needs: build
     steps:
       - name: Pull Image on Server
-        run: ssh  -o "StrictHostKeyChecking no" ${{ secrets.server_username }}@${{ inputs.docker_server }} "docker compose -p ${{ inputs.docker_project }} down && docker compose -p ${{ inputs.docker_project }} pull && docker compose -p ${{ inputs.docker_project }} up -d"
+        run: ssh  -o "StrictHostKeyChecking no" ${{ secrets.server_username }}@${{ inputs.docker_server }} "docker compose -p ${{ inputs.docker_project }} pull && docker compose -p ${{ inputs.docker_project }} up -d"
