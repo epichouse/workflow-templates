@@ -40,7 +40,7 @@ jobs:
         uses: dawidd6/action-ansible-playbook@v2
         with:
           # Required, playbook filepath
-          playbook: ${{ inputs.playbook }}.yml
+          playbook: playbooks/${{ inputs.playbook }}.yml
           # Optional, directory where playbooks live
           directory: ./infrastructure
           # Optional, ansible configuration file content (ansible.cfg)
