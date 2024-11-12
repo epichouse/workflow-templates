@@ -12,6 +12,7 @@ on:
         description: non-mandatory variable used for playbooks that deploy a specific role.
     secrets:
       sudo_password:  
+      mastertoken:
 
 jobs:
   Execute-Playbook:
