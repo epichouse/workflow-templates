@@ -32,5 +32,30 @@ jobs:
           repository: 'epichouse/bash'
           ref: 'main'
           token: ${{secrets.mastertoken}}
-      - name: Run Playbook
-        run: ansible-playbook playbooks/${{ inputs.playbook }}.yml --extra-vars "ansible_sudo_pass=${{ secrets.SUDO_PASSWORD }}, rolename=${{ inputs.rolename }}"
+ #     - name: Run Playbook
+ #       run: ansible-playbook playbooks/${{ inputs.playbook }}.yml --extra-vars "ansible_sudo_pass=${{ secrets.SUDO_PASSWORD }}, rolename=${{ inputs.rolename }}"
+
+
+      - name: Run playbook
+        uses: dawidd6/action-ansible-playbook@v2
+        with:
+          # Required, playbook filepath
+          playbook: playbooks/${{ inputs.playbook }}.yml
+          # Optional, directory where playbooks live
+          directory: ./
+          # Optional, ansible configuration file content (ansible.cfg)
+                    # Optional, SSH private key
+         # key: ${{secrets.SSH_PRIVATE_KEY}}
+          # Optional, literal inventory file contents
+
+          # Optional, encrypted vault password
+          ########################vault_password: ${{secrets.VAULT_PASSWORD}}
+          # Optional, galaxy requirements filepath
+        #  requirements: galaxy-requirements.yml
+          # Optional, additional flags to pass to ansible-playbook
+          options: |
+            --inventory .hosts
+            --limit group1
+            --extra-vars ansible_sudo_pass=${{ secrets.SUDO_PASSWORD }}
+            --extra-vars rolename=${{ inputs.rolename }}
+            --verbose
