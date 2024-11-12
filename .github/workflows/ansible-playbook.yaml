@@ -17,9 +17,9 @@ on:
 jobs:
   Execute-Playbook:
     runs-on: self-hosted
-    defaults:
-      run:
-        working-directory: infrastructure/
+   # defaults:
+   #   run:
+   #     working-directory: infrastructure/
     steps:
       - name: Checkout Repository (infrastructure)
         uses: actions/checkout@v4
@@ -42,7 +42,7 @@ jobs:
           # Required, playbook filepath
           playbook: ${{ inputs.playbook }}.yml
           # Optional, directory where playbooks live
-          directory: ./
+          directory: ./infrastructure
           # Optional, ansible configuration file content (ansible.cfg)
                     # Optional, SSH private key
          # key: ${{secrets.SSH_PRIVATE_KEY}}
