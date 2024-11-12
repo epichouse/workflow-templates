@@ -42,7 +42,7 @@ jobs:
           # Required, playbook filepath
           playbook: ${{ inputs.playbook }}.yml
           # Optional, directory where playbooks live
-          #directory: ./
+          directory: infrastructure/
           # Optional, ansible configuration file content (ansible.cfg)
                     # Optional, SSH private key
          # key: ${{secrets.SSH_PRIVATE_KEY}}
