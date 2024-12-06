@@ -3,6 +3,10 @@ name: Template - Deploy Playbook
 on:
   workflow_call:
     inputs:
+      runner: 
+        required: true
+        type: string
+        description: runner to execute job on
       playbook: 
         required: true
         type: string
@@ -10,13 +14,16 @@ on:
       rolename:
         type: string
         description: non-mandatory variable used for playbooks that deploy a specific role.
+      group:
+        type: string
+        description: non-mandatory variable used for playbooks that deploy to a specific inventory group.
     secrets:
       sudo_password:  
       mastertoken:
 
 jobs:
   Execute-Playbook:
-    runs-on: self-hosted
+    runs-on: ${{ inputs.runner }}
     defaults:
       run:
         working-directory: infrastructure/
@@ -33,4 +40,4 @@ jobs:
           ref: 'main'
           token: ${{secrets.mastertoken}}
       - name: Run Playbook
-        run: ansible-playbook playbooks/${{ inputs.playbook }}.yml --extra-vars "ansible_sudo_pass=${{ secrets.SUDO_PASSWORD }}, rolename=${{ inputs.rolename }}"
+        run: ansible-playbook playbooks/${{ inputs.playbook }}.yml --extra-vars "ansible_sudo_pass=${{ secrets.SUDO_PASSWORD }}, rolename=${{ inputs.rolename }}", , group=${{ inputs.group }}"
