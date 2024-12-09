@@ -17,6 +17,9 @@ on:
       group:
         type: string
         description: non-mandatory variable used for playbooks that deploy to a specific inventory group.
+      site:
+        type: string
+        description: non-mandatory variable used for playbooks that passes in site name.
     secrets:
       sudo_password:  
       mastertoken:
@@ -41,4 +44,4 @@ jobs:
           ref: 'main'
           token: ${{secrets.mastertoken}}
       - name: Run Playbook
-        run: ansible-playbook playbooks/${{ inputs.playbook }}.yml --extra-vars "ansible_sudo_pass=${{ secrets.SUDO_PASSWORD }} rolename=${{ inputs.rolename }} group=${{ inputs.group }}"
+        run: ansible-playbook playbooks/${{ inputs.playbook }}.yml --extra-vars "ansible_sudo_pass=${{ secrets.SUDO_PASSWORD }} rolename=${{ inputs.rolename }} group=${{ inputs.group }} site=${{ inputs.site }}"
