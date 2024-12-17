@@ -25,9 +25,9 @@ on:
       mastertoken:
 
 jobs:
-  execute-playbook:
+  playbook:
     runs-on: ${{ inputs.runner }}
-    name: ${{ inputs.playbook }}
+    #name: ${{ inputs.playbook }}
     defaults:
       run:
         working-directory: infrastructure/
