@@ -19,7 +19,7 @@ on:
       mastertoken:
 jobs:
   multisite:
-    uses: ./.github/workflows/steps/multisite-playbook.yaml
+    uses: ./.github/workflows/step-multisite-playbook.yaml
     if: inputs.multisite == true
     with:
       playbook: ${{ inputs.playbook }}
