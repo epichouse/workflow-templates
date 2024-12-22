@@ -15,19 +15,19 @@ jobs:
     name: london
     defaults:
       run:
-        working-directory: infrastructure/
+        working-directory: ansible-core/
     steps:
       - name: Checkout Repository ("${{ github.event.repository.name }}")
         uses: actions/checkout@v4
         with:
           path: "${{ github.event.repository.name }}"
-      - name: Checkout Repository (infrastructure)
+      - name: Checkout Repository (ansible-core)
         uses: actions/checkout@v4
         with:
-          path: infrastructure
+          path: ansible-core
           token: ${{secrets.mastertoken}}
           ref: 'main'
-          repository: 'epichouse/infrastructure'
+          repository: 'epichouse/ansible-core'
       - name: Checkout Repository (bash)
         uses: actions/checkout@v4
         with:
@@ -42,19 +42,19 @@ jobs:
     name: manchester
     defaults:
       run:
-        working-directory: infrastructure/
+        working-directory: ansible-core/
     steps:
       - name: Checkout Repository ("${{ github.event.repository.name }}")
         uses: actions/checkout@v4
         with:
           path: "${{ github.event.repository.name }}"
-      - name: Checkout Repository (infrastructure)
+      - name: Checkout Repository (ansible-core)
         uses: actions/checkout@v4
         with:
-          path: infrastructure
+          path: ansible-core
           token: ${{secrets.mastertoken}}
           ref: 'main'
-          repository: 'epichouse/infrastructure'
+          repository: 'epichouse/ansible-core'
       - name: Checkout Repository (bash)
         uses: actions/checkout@v4
         with:
