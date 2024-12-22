@@ -24,12 +24,11 @@ on:
       mastertoken:
 jobs:
   multisite:
-    uses: step-multisite-role.yaml
+    uses: ./.github/workflows/step-multisite-role.yaml
     if: inputs.multisite == true
     with:
       rolepath: ${{ inputs.rolepath }}
       rolehosts: ${{ inputs.rolehosts }}
-      site: ${{ inputs.site }}
     secrets:
       sudo_password: ${{ secrets.sudo_password }}
       mastertoken: ${{ secrets.mastertoken }}
