@@ -1,0 +1,66 @@
+on:
+    workflow_call:
+      inputs:
+        playbook:
+            required: true
+            type: string
+            description: ansible playbook to be executed
+      secrets:
+        sudo_password:  
+        mastertoken:
+
+jobs:
+  london:
+    runs-on: london
+    name: london
+    defaults:
+      run:
+        working-directory: infrastructure/
+    steps:
+      - name: Checkout Repository ("${{ github.event.repository.name }}")
+        uses: actions/checkout@v4
+        with:
+          path: "${{ github.event.repository.name }}"
+      - name: Checkout Repository (infrastructure)
+        uses: actions/checkout@v4
+        with:
+          path: infrastructure
+          token: ${{secrets.mastertoken}}
+          ref: 'main'
+          repository: 'epichouse/infrastructure'
+      - name: Checkout Repository (bash)
+        uses: actions/checkout@v4
+        with:
+          path: bash
+          repository: 'epichouse/bash'
+          ref: 'main'
+          token: ${{secrets.mastertoken}}
+      - name: Run Playbook
+        run: ansible-playbook playbooks/${{ inputs.playbook }}.yml --extra-vars "ansible_sudo_pass=${{ secrets.SUDO_PASSWORD }} rolehosts=london"
+  manchester:
+    runs-on: manchester
+    name: manchester
+    defaults:
+      run:
+        working-directory: infrastructure/
+    steps:
+      - name: Checkout Repository ("${{ github.event.repository.name }}")
+        uses: actions/checkout@v4
+        with:
+          path: "${{ github.event.repository.name }}"
+      - name: Checkout Repository (infrastructure)
+        uses: actions/checkout@v4
+        with:
+          path: infrastructure
+          token: ${{secrets.mastertoken}}
+          ref: 'main'
+          repository: 'epichouse/infrastructure'
+      - name: Checkout Repository (bash)
+        uses: actions/checkout@v4
+        with:
+          path: bash
+          repository: 'epichouse/bash'
+          ref: 'main'
+          token: ${{secrets.mastertoken}}
+      - name: Run Playbook
+      run: ansible-playbook playbooks/${{ inputs.playbook }}.yml --extra-vars "ansible_sudo_pass=${{ secrets.SUDO_PASSWORD }} rolehosts=manchester"

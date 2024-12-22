@@ -1,47 +1,29 @@
-name: Template - Deploy Playbook
+name: Template - Execute Ansible Role
 
 on:
   workflow_call:
     inputs:
-      runner: 
-        required: true
-        type: string
-        description: runner to execute job on
-      playbook: 
+      playbook:
         required: true
         type: string
         description: ansible playbook to be executed
-      rolename:
-        type: string
-        description: non-mandatory variable used for playbooks that deploy a specific role.
-      group:
-        type: string
-        description: non-mandatory variable used for playbooks that deploy to a specific inventory group.
+      multisite:
+        type: boolean
+        description: Multisite Job or single server?
+        default: true
       site:
         type: string
-        description: non-mandatory variable used for playbooks that passes in site name.
+        description: Site used for job execution on non multisite jobs
     secrets:
       sudo_password:  
       mastertoken:
-
 jobs:
-  playbook:
-    runs-on: ${{ inputs.runner }}
-    name: ${{ inputs.playbook }}
-    defaults:
-      run:
-        working-directory: infrastructure/
-    steps:
-      - name: Checkout Repository (infrastructure)
-        uses: actions/checkout@v4
-        with:
-          path: infrastructure
-      - name: Checkout Repository (bash)
-        uses: actions/checkout@v4
-        with:
-          path: bash
-          repository: 'epichouse/bash'
-          ref: 'main'
-          token: ${{secrets.mastertoken}}
-      - name: Run Playbook
-        run: ansible-playbook playbooks/${{ inputs.playbook }}.yml --extra-vars "ansible_sudo_pass=${{ secrets.SUDO_PASSWORD }} rolename=${{ inputs.rolename }} group=${{ inputs.group }} site=${{ inputs.site }}"
+  multisite:
+    uses: ./.github/workflows/steps/multisite-playbook.yaml
+    if: inputs.multisite == true
+    with:
+      playbook: ${{ inputs.playbook }}
+    secrets:
+      sudo_password: ${{ secrets.sudo_password }}
+      mastertoken: ${{ secrets.mastertoken }}
+
