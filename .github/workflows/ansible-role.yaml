@@ -24,7 +24,7 @@ on:
       mastertoken:
 jobs:
   multisite:
-    uses: epichouse/workflow-templates/.github/workflows/_multisite-role.yaml@main
+    uses: step-multisite-role.yaml
     if: inputs.multisite == true
     with:
       rolepath: ${{ inputs.rolepath }}
