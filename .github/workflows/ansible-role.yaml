@@ -16,7 +16,6 @@ on:
         description: Multisite Job or single server?
         default: true
       site:
-        default: "london"
         type: string
         description: Site used for job execution on non multisite jobs
     secrets:
@@ -29,6 +28,16 @@ jobs:
     with:
       rolepath: ${{ inputs.rolepath }}
       rolehosts: ${{ inputs.rolehosts }}
+    secrets:
+      sudo_password: ${{ secrets.sudo_password }}
+      mastertoken: ${{ secrets.mastertoken }}
+  singlesite:
+    uses: ./.github/workflows/step-singlesite-role.yaml
+    if: inputs.multisite == false
+    with:
+      rolepath: ${{ inputs.rolepath }}
+      rolehosts: ${{ inputs.rolehosts }}
+      site: ${{ inputs.site }}
     secrets:
       sudo_password: ${{ secrets.sudo_password }}
       mastertoken: ${{ secrets.mastertoken }}
