@@ -19,8 +19,8 @@ on:
 
 jobs:
   singlesite:
-    runs-on: "{{ inputs.site }}"
-    name: "{{ inputs.rolehosts}}"
+    runs-on: "${{ inputs.site }}"
+    name: "${{ inputs.rolehosts}}"
     defaults:
       run:
         working-directory: infrastructure/
