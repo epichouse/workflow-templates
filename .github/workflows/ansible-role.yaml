@@ -1,0 +1,35 @@
+name: Template - Execute Ansible Role
+
+on:
+  workflow_call:
+    inputs:
+      rolepath:
+        required: true
+        type: string
+        description: Role to execute
+      rolehosts:
+        required: true
+        type: string
+        description: Hosts to execute role against
+      multisite:
+        type: boolean
+        description: Multisite Job or single server?
+        default: true
+      site:
+        default: "london"
+        type: string
+        description: Site used for job execution on non multisite jobs
+    secrets:
+      sudo_password:  
+      mastertoken:
+jobs:
+  multisite:
+    uses: epichouse/workflow-templates/.github/workflows/_multisite-role.yaml@main
+    if: inputs.multisite == true
+    with:
+      rolepath: ${{ inputs.rolepath }}
+      rolehosts: ${{ inputs.rolehosts }}
+      site: ${{ inputs.site }}
+    secrets:
+      sudo_password: ${{ secrets.sudo_password }}
+      mastertoken: ${{ secrets.mastertoken }}
