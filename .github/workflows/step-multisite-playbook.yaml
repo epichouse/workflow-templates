@@ -5,6 +5,11 @@ on:
             required: true
             type: string
             description: ansible playbook to be executed
+        checkout_software:
+            required: true
+            type: boolean
+            description: Checkout software repositorie
+            default: false
       secrets:
         sudo_password:  
         mastertoken:
@@ -28,6 +33,14 @@ jobs:
           token: ${{secrets.mastertoken}}
           ref: 'main'
           repository: 'epichouse/ansible-core'
+      - name: Checkout Repository (ansible-software)
+        uses: actions/checkout@v4
+        with:
+          path: ansible-software
+          token: ${{secrets.mastertoken}}
+          ref: 'main'
+          repository: 'epichouse/ansible-software'
+        if: inputs.checkout_software == true
       - name: Checkout Repository (bash)
         uses: actions/checkout@v4
         with:
@@ -55,6 +68,14 @@ jobs:
           token: ${{secrets.mastertoken}}
           ref: 'main'
           repository: 'epichouse/ansible-core'
+      - name: Checkout Repository (ansible-software)
+        uses: actions/checkout@v4
+        with:
+          path: ansible-software
+          token: ${{secrets.mastertoken}}
+          ref: 'main'
+          repository: 'epichouse/ansible-software'
+        if: inputs.checkout_software == true
       - name: Checkout Repository (bash)
         uses: actions/checkout@v4
         with:

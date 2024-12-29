@@ -14,6 +14,11 @@ on:
       site:
         type: string
         description: Site used for job execution on non multisite jobs
+      checkout_software:
+        required: false
+        type: boolean
+        description: Checkout software repositories
+        default: false
     secrets:
       sudo_password:  
       mastertoken:
@@ -23,6 +28,7 @@ jobs:
     if: inputs.multisite == true
     with:
       playbook: ${{ inputs.playbook }}
+      checkout_software: ${{ inputs.checkout_software }}
     secrets:
       sudo_password: ${{ secrets.sudo_password }}
       mastertoken: ${{ secrets.mastertoken }}
