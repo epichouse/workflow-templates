@@ -51,15 +51,15 @@ jobs:
     needs: plan
     steps:
       - uses: trstringer/manual-approval@v1
-      with:
-        secret: ${{ inputs.mastertoken }}
-        approvers: danshaww
-        minimum-approvals: 1
-        issue-title: "Terraform Approval ${{ inputs.mode }}"
-        issue-body: "Please approve this Terraform ${{ inputs.mode }}"
-        exclude-workflow-initiator-as-approver: false
-        additional-approved-words: ''
-        additional-denied-words: ''
+        with:
+          secret: ${{ inputs.mastertoken }}
+          approvers: danshaww
+          minimum-approvals: 1
+          issue-title: "Terraform Approval ${{ inputs.mode }}"
+          issue-body: "Please approve this Terraform ${{ inputs.mode }}"
+          exclude-workflow-initiator-as-approver: false
+          additional-approved-words: ''
+          additional-denied-words: ''
   apply:
     name: Terraform Apply
     runs-on: ubuntu-latest
