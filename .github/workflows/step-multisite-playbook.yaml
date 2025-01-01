@@ -50,10 +50,10 @@ jobs:
           ref: 'main'
           token: ${{secrets.mastertoken}}
       - name: Populate Vault Password File
-        run: echo $PASS > ./vault_pass
-        shell: bash
-        env:
-          PASS: ${{ secrets.VAULT_PASSWORD }}
+        run: echo ${{ secrets.VAULT_PASSWORD }} > ./vault_pass
+        #shell: bash
+        #env:
+        #  PASS: ${{ secrets.VAULT_PASSWORD }}
       - name: Run Playbook
         run: ansible-playbook playbooks/${{ inputs.playbook }}.yml --extra-vars "ansible_sudo_pass=${{ secrets.SUDO_PASSWORD }} rolehosts=london"
       - name: Cleanup Vault Password File
