@@ -12,7 +12,6 @@ on:
             type: string
             description: Workflow to trigger
     secrets:
-        sudo_password:  
         mastertoken:
 jobs:
     trigger:
