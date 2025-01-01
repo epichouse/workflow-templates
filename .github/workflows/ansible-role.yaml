@@ -21,6 +21,7 @@ on:
     secrets:
       sudo_password:  
       mastertoken:
+      vault_password:
 jobs:
   multisite:
     uses: ./.github/workflows/step-multisite-role.yaml
@@ -31,6 +32,7 @@ jobs:
     secrets:
       sudo_password: ${{ secrets.sudo_password }}
       mastertoken: ${{ secrets.mastertoken }}
+      vault_password: ${{ secrets.vault_password }}
   singlesite:
     uses: ./.github/workflows/step-singlesite-role.yaml
     if: inputs.multisite == false

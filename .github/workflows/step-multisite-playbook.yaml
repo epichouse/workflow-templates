@@ -13,6 +13,7 @@ on:
       secrets:
         sudo_password:  
         mastertoken:
+        vault_password:
 
 jobs:
   london:
@@ -48,8 +49,12 @@ jobs:
           repository: 'epichouse/bash'
           ref: 'main'
           token: ${{secrets.mastertoken}}
+      - name: Populate Vault Password File
+        run: echo "${{ secrets.VAULT_PASSWORD }}" > ./vault_pass
       - name: Run Playbook
         run: ansible-playbook playbooks/${{ inputs.playbook }}.yml --extra-vars "ansible_sudo_pass=${{ secrets.SUDO_PASSWORD }} rolehosts=london"
+      - name: Cleanup Vault Password File
+        run: rm ./vault_pass
   manchester:
     runs-on: manchester
     name: manchester
@@ -83,5 +88,9 @@ jobs:
           repository: 'epichouse/bash'
           ref: 'main'
           token: ${{secrets.mastertoken}}
+      - name: Populate Vault Password File
+        run: echo "${{ secrets.VAULT_PASSWORD }}" > ./vault_pass
       - name: Run Playbook
         run: ansible-playbook playbooks/${{ inputs.playbook }}.yml --extra-vars "ansible_sudo_pass=${{ secrets.SUDO_PASSWORD }} rolehosts=manchester"
+      - name: Cleanup Vault Password File
+        run: rm ./vault_pass
