@@ -51,6 +51,7 @@ jobs:
           token: ${{secrets.mastertoken}}
       - name: Populate Vault Password File
         run: echo $PASS > ./vault_pass
+        shell: bash
         env:
           PASS: ${{ secrets.VAULT_PASSWORD }}
       - name: Run Playbook
@@ -92,6 +93,7 @@ jobs:
           token: ${{secrets.mastertoken}}
       - name: Populate Vault Password File
         run: echo $PASS > ./vault_pass
+        shell: bash
         env:
           PASS: ${{ secrets.VAULT_PASSWORD }}
       - name: Run Playbook
