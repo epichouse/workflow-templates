@@ -43,3 +43,4 @@ jobs:
     secrets:
       sudo_password: ${{ secrets.sudo_password }}
       mastertoken: ${{ secrets.mastertoken }}
+      vault_password: ${{ secrets.vault_password }}
