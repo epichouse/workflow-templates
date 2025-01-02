@@ -50,14 +50,14 @@ jobs:
           ref: 'main'
           token: ${{secrets.mastertoken}}
       - name: Populate Vault Password File
-        run: echo $PASS > ./vault_pass
+        run: echo $PASS > ~/.vault
         shell: bash
         env:
           PASS: ${{ secrets.VAULT_PASSWORD }}
       - name: Run Playbook
         run: ansible-playbook playbooks/${{ inputs.playbook }}.yml --extra-vars "ansible_sudo_pass=${{ secrets.SUDO_PASSWORD }} rolehosts=london"
       - name: Cleanup Vault Password File
-        run: rm ./vault_pass
+        run: rm ~/.vault
         if: always()
   manchester:
     runs-on: manchester
@@ -93,12 +93,12 @@ jobs:
           ref: 'main'
           token: ${{secrets.mastertoken}}
       - name: Populate Vault Password File
-        run: echo $PASS > ./vault_pass
+        run: echo $PASS > ~/.vault
         shell: bash
         env:
           PASS: ${{ secrets.VAULT_PASSWORD }}
       - name: Run Playbook
         run: ansible-playbook playbooks/${{ inputs.playbook }}.yml --extra-vars "ansible_sudo_pass=${{ secrets.SUDO_PASSWORD }} rolehosts=manchester"
       - name: Cleanup Vault Password File
-        run: rm ./vault_pass
+        run: rm ~/.vault
         if: always()
