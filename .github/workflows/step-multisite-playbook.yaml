@@ -55,7 +55,7 @@ jobs:
         env:
           PASS: ${{ secrets.VAULT_PASSWORD }}
       - name: Run Playbook
-        run: ansible-playbook playbooks/${{ inputs.playbook }}.yml --extra-vars "ansible_sudo_pass=${{ secrets.SUDO_PASSWORD }} rolehosts=london"
+        run: ansible-playbook playbooks/${{ inputs.playbook }}.yml --extra-vars "ansible_sudo_pass=${{ secrets.SUDO_PASSWORD }} rolehosts=london" --vault-password-file ./vault_pass
       - name: Cleanup Vault Password File
         run: rm ./vault_pass
         if: always()
@@ -98,7 +98,7 @@ jobs:
         env:
           PASS: ${{ secrets.VAULT_PASSWORD }}
       - name: Run Playbook
-        run: ansible-playbook playbooks/${{ inputs.playbook }}.yml --extra-vars "ansible_sudo_pass=${{ secrets.SUDO_PASSWORD }} rolehosts=manchester"
+        run: ansible-playbook playbooks/${{ inputs.playbook }}.yml --extra-vars "ansible_sudo_pass=${{ secrets.SUDO_PASSWORD }} rolehosts=manchester" --vault-password-file ./vault_pass
       - name: Cleanup Vault Password File
         run: rm ./vault_pass
         if: always()
