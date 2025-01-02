@@ -45,12 +45,12 @@ jobs:
           ref: 'main'
           token: ${{secrets.mastertoken}}
       - name: Populate Vault Password File
-        run: echo $PASS > ~/.vault
+        run: echo $PASS > ./vault_pass
         shell: bash
         env:
           PASS: ${{ secrets.VAULT_PASSWORD }}
       - name: Run Playbook
-        run: ansible-playbook playbooks/deploy-role.yml --extra-vars "ansible_sudo_pass=${{ secrets.SUDO_PASSWORD }} rolepath=${{ inputs.rolepath }} rolehosts=${{ inputs.rolehosts }}"
+        run: ansible-playbook playbooks/deploy-role.yml --extra-vars "ansible_sudo_pass=${{ secrets.SUDO_PASSWORD }} rolepath=${{ inputs.rolepath }} rolehosts=${{ inputs.rolehosts }}" --vault-password-file ./vault_pass
       - name: Cleanup Vault Password File
-        run: rm ~/.vault
+        run: rm ./vault_pass
         if: always()
