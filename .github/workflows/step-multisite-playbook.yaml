@@ -64,7 +64,7 @@ jobs:
     name: manchester
     defaults:
       run:
-        working-directory: ansible-core/
+        working-directory: "${{ github.event.repository.name }}"
     steps:
       - name: Checkout Repository ("${{ github.event.repository.name }}")
         uses: actions/checkout@v4
