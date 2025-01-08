@@ -10,6 +10,9 @@ on:
             type: boolean
             description: Checkout software repositorie
             default: false
+        additional_parameters:
+          type: string
+          description: Additional Parameters to Ansible command
       secrets:
         sudo_password:  
         mastertoken:
@@ -41,7 +44,6 @@ jobs:
           token: ${{secrets.mastertoken}}
           ref: 'main'
           repository: 'epichouse/ansible-roles'
-       # if: inputs.checkout_software == true
       - name: Checkout Repository (bash)
         uses: actions/checkout@v4
         with:
@@ -55,7 +57,7 @@ jobs:
         env:
           PASS: ${{ secrets.VAULT_PASSWORD }}
       - name: Run Playbook
-        run: ansible-playbook playbooks/${{ inputs.playbook }}.yml --extra-vars "ansible_sudo_pass=${{ secrets.SUDO_PASSWORD }} rolehosts=london"
+        run: ansible-playbook playbooks/${{ inputs.playbook }}.yml ${{ inputs.additional_parameters }} --extra-vars "ansible_sudo_pass=${{ secrets.SUDO_PASSWORD }} rolehosts=london"
       - name: Cleanup Vault Password File
         run: rm ~/.vault
         if: always()
@@ -84,7 +86,6 @@ jobs:
           token: ${{secrets.mastertoken}}
           ref: 'main'
           repository: 'epichouse/ansible-roles'
-        if: inputs.checkout_software == true
       - name: Checkout Repository (bash)
         uses: actions/checkout@v4
         with:
@@ -98,7 +99,7 @@ jobs:
         env:
           PASS: ${{ secrets.VAULT_PASSWORD }}
       - name: Run Playbook
-        run: ansible-playbook playbooks/${{ inputs.playbook }}.yml --extra-vars "ansible_sudo_pass=${{ secrets.SUDO_PASSWORD }} rolehosts=manchester"
+        run: ansible-playbook playbooks/${{ inputs.playbook }}.yml ${{ inputs.additional_parameters }} --extra-vars "ansible_sudo_pass=${{ secrets.SUDO_PASSWORD }} rolehosts=manchester"
       - name: Cleanup Vault Password File
         run: rm ~/.vault
         if: always()

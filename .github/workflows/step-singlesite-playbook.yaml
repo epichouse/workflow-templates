@@ -14,6 +14,9 @@ on:
           required: true
           type: string
           description: site to execute against
+        additional_parameters:
+          type: string
+          description: Additional Parameters to Ansible command
       secrets:
         sudo_password:  
         mastertoken:
@@ -45,7 +48,6 @@ jobs:
           token: ${{secrets.mastertoken}}
           ref: 'main'
           repository: 'epichouse/ansible-roles'
-    #    if: inputs.checkout_software == true
       - name: Checkout Repository (bash)
         uses: actions/checkout@v4
         with:
@@ -61,7 +63,7 @@ jobs:
       - name: List dir
         run: ls -la
       - name: Run Playbook
-        run: ansible-playbook playbooks/${{ inputs.playbook }}.yml --extra-vars "ansible_sudo_pass=${{ secrets.SUDO_PASSWORD }}"
+        run: ansible-playbook playbooks/${{ inputs.playbook }}.yml ${{ inputs.additional_parameters }} --extra-vars "ansible_sudo_pass=${{ secrets.SUDO_PASSWORD }}"
       - name: Cleanup Vault Password File
         run: rm ~/.vault
         if: always()
