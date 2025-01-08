@@ -1,0 +1,69 @@
+on:
+    workflow_call:
+      inputs:
+        playbook:
+          required: true
+          type: string
+          description: ansible playbook to be executed
+        checkout_software:
+          required: true
+          type: boolean
+          description: Checkout software repositorie
+          default: false
+        site:
+          required: true
+          type: string
+          description: site to execute against
+        playbook:
+          required: true
+          type: string
+          description: Playbook to be executed
+      secrets:
+        sudo_password:  
+        mastertoken:
+        vault_password:
+
+jobs:
+  london:
+    runs-on: "${{ inputs.site }}"
+    name: "${{ inputs.playbook }}"
+    defaults:
+      run:
+        working-directory: ansible-core/
+    steps:
+      - name: Checkout Repository ("${{ github.event.repository.name }}")
+        uses: actions/checkout@v4
+        with:
+          path: "${{ github.event.repository.name }}"
+      - name: Checkout Repository (ansible-core)
+        uses: actions/checkout@v4
+        with:
+          path: ansible-core
+          token: ${{secrets.mastertoken}}
+          ref: 'main'
+          repository: 'epichouse/ansible-core'
+      - name: Checkout Repository (ansible-software)
+        uses: actions/checkout@v4
+        with:
+          path: ansible-software
+          token: ${{secrets.mastertoken}}
+          ref: 'main'
+          repository: 'epichouse/ansible-software'
+        if: inputs.checkout_software == true
+      - name: Checkout Repository (bash)
+        uses: actions/checkout@v4
+        with:
+          path: bash
+          repository: 'epichouse/bash'
+          ref: 'main'
+          token: ${{secrets.mastertoken}}
+      - name: Populate Vault Password File
+        run: echo $PASS > ~/.vault
+        shell: bash
+        env:
+          PASS: ${{ secrets.VAULT_PASSWORD }}
+      - name: Run Playbook
+        run: ansible-playbook ${{ inputs.playbook }}.yml --extra-vars "ansible_sudo_pass=${{ secrets.SUDO_PASSWORD }}"
+      - name: Cleanup Vault Password File
+        run: rm ~/.vault
+        if: always()

@@ -34,3 +34,14 @@ jobs:
       sudo_password: ${{ secrets.sudo_password }}
       mastertoken: ${{ secrets.mastertoken }}
       vault_password: ${{ secrets.vault_password }}
+  singlesite:
+    uses: ./.github/workflows/step-singlesite-playbook.yaml
+    if: inputs.multisite == true
+    with:
+      playbook: ${{ inputs.playbook }}
+      site: ${{ inputs.site }}
+      checkout_software: ${{ inputs.checkout_software }}
+    secrets:
+      sudo_password: ${{ secrets.sudo_password }}
+      mastertoken: ${{ secrets.mastertoken }}
+      vault_password: ${{ secrets.vault_password }}
