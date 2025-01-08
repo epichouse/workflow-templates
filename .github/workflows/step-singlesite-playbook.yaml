@@ -26,7 +26,7 @@ on:
 jobs:
   london:
     runs-on: "${{ inputs.site }}"
-    name: "${{ inputs.playbook }}"
+    name: "test" # ${{ inputs.playbook }}"
     defaults:
       run:
         working-directory: ansible-core/
