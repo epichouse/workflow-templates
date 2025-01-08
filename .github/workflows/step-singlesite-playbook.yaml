@@ -38,14 +38,14 @@ jobs:
           token: ${{secrets.mastertoken}}
           ref: 'main'
           repository: 'epichouse/ansible-core'
-      - name: Checkout Repository (ansible-software)
+      - name: Checkout Repository (ansible-roles)
         uses: actions/checkout@v4
         with:
-          path: ansible-software
+          path: ansible-roles
           token: ${{secrets.mastertoken}}
           ref: 'main'
-          repository: 'epichouse/ansible-software'
-        if: inputs.checkout_software == true
+          repository: 'epichouse/ansible-roles'
+    #    if: inputs.checkout_software == true
       - name: Checkout Repository (bash)
         uses: actions/checkout@v4
         with:
