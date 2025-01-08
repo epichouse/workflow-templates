@@ -14,10 +14,6 @@ on:
           required: true
           type: string
           description: site to execute against
-        playbook:
-          required: true
-          type: string
-          description: Playbook to be executed
       secrets:
         sudo_password:  
         mastertoken:
@@ -26,7 +22,7 @@ on:
 jobs:
   london:
     runs-on: "${{ inputs.site }}"
-    name: "test" # ${{ inputs.playbook }}"
+    name: "${{ inputs.playbook }}"
     defaults:
       run:
         working-directory: ansible-core/
