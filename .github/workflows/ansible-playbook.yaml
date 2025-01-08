@@ -36,7 +36,7 @@ jobs:
       vault_password: ${{ secrets.vault_password }}
   singlesite:
     uses: ./.github/workflows/step-singlesite-playbook.yaml
-    if: inputs.multisite == true
+    if: inputs.multisite == false
     with:
       playbook: ${{ inputs.playbook }}
       site: ${{ inputs.site }}
