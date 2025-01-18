@@ -9,6 +9,10 @@ on:
         required: true
         type: string
         description: The environment to deploy to
+      site:
+        type: string
+        description: Site used for job execution on non multisite jobs
+        required: true
     secrets:
       mastertoken:
       arm_client_id:
@@ -21,7 +25,7 @@ on:
 jobs:
   plan:
     name: Terraform Plan
-    runs-on: ubuntu-latest
+    runs-on: ${{ inputs.site }}
     env:
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
@@ -47,7 +51,7 @@ jobs:
           path: tfplan
   apply:
     name: Terraform Apply
-    runs-on: ubuntu-latest
+    runs-on: ${{ inputs.site }}
     needs: plan
     environment:
       name: ${{inputs.environment}}
