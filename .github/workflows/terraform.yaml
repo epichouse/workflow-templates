@@ -55,7 +55,7 @@ jobs:
         run: terraform plan -out=tfplan -destroy
         if: inputs.mode == 'destroy'
       - name: Upload Plan for Apply
-        run: az storage blob upload --account-name ${{ secrets.AZURE_STORAGE_ACCOUNT_NAME }} --container-name ${{ secrets.AZURE_STORAGE_CONTAINER_NAME }} --name plans/tfplan-${{ github.sha }} --file ./${{ inputs.directory }}/tfplan --auth-mode login
+        run: az storage blob upload --account-name ${{ secrets.AZURE_STORAGE_ACCOUNT_NAME }} --container-name ${{ secrets.AZURE_STORAGE_CONTAINER_NAME }} --name plans/tfplan-${{ github.sha }} --file ${{ inputs.directory }}/tfplan --auth-mode login
 
 
 
@@ -83,7 +83,7 @@ jobs:
       - name: Azure Login
         run: az login --service-principal -u ${{secrets.ARM_CLIENT_ID}} -p ${{ secrets.ARM_CLIENT_SECRET }} --tenant ${{ secrets.ARM_TENANT_ID }}
       - name: Download Plan
-        run: az storage blob download --account-name ${{ secrets.AZURE_STORAGE_ACCOUNT_NAME }} --container-name ${{ secrets.AZURE_STORAGE_CONTAINER_NAME }} --name plans/tfplan-${{ github.sha }} --file ./${{ inputs.directory }}/tfplan
+        run: az storage blob download --account-name ${{ secrets.AZURE_STORAGE_ACCOUNT_NAME }} --container-name ${{ secrets.AZURE_STORAGE_CONTAINER_NAME }} --name plans/tfplan-${{ github.sha }} --file ${{ inputs.directory }}/tfplan
 
 
 
