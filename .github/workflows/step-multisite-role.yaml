@@ -33,6 +33,13 @@ jobs:
           token: ${{secrets.mastertoken}}
           ref: 'main'
           repository: 'epichouse/ansible-core'
+      - name: Checkout Repository (ansible-vault)
+        uses: actions/checkout@v4
+        with:
+          path: ansible-vault
+          token: ${{secrets.mastertoken}}
+          ref: 'main'
+          repository: 'epichouse/ansible-vault'
       - name: Checkout Repository (bash)
         uses: actions/checkout@v4
         with:
@@ -68,6 +75,13 @@ jobs:
           token: ${{secrets.mastertoken}}
           ref: 'main'
           repository: 'epichouse/ansible-core'
+      - name: Checkout Repository (ansible-vault)
+        uses: actions/checkout@v4
+        with:
+          path: ansible-vault
+          token: ${{secrets.mastertoken}}
+          ref: 'main'
+          repository: 'epichouse/ansible-vault'
       - name: Checkout Repository (bash)
         uses: actions/checkout@v4
         with:
