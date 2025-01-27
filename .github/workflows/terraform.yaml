@@ -55,7 +55,7 @@ jobs:
         run: terraform plan -out=tfplan -destroy
         if: inputs.mode == 'destroy'
       - name: Upload Plan for Apply
-        run: az storage blob upload --account-name ${{ secrets.AZURE_STORAGE_ACCOUNT_NAME }} --container-name ${{ secrets.AZURE_STORAGE_CONTAINER_NAME }} --name plans/tfplan-${{inputs.mode}}-${{ github.sha }} --file tfplan --auth-mode login
+        run: az storage blob upload --account-name ${{ secrets.AZURE_STORAGE_ACCOUNT_NAME }} --container-name ${{ secrets.AZURE_STORAGE_CONTAINER_NAME }} --name plans/tfplan-${{inputs.mode}}-${{ github.sha }} --file tfplan --auth-mode login --overwrite
 
 
 
