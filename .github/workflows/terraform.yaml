@@ -43,7 +43,7 @@ jobs:
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
     steps:
       - name: Mode Check
-        run: echo "::title=WORKFLOW RUNNING IN DESTRUCTIVE MODE::Warning this workflow is running in destructive mode"
+        run: echo "::warning title=WORKFLOW RUNNING IN DESTRUCTIVE MODE::Warning this workflow is running in destructive mode"
         if: ${{ inputs.mode == 'destroy'}}
       - name: Checkout code
         uses: actions/checkout@v3
