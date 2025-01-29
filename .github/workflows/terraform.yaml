@@ -24,7 +24,6 @@ on:
         type: string
         description: Apply Terraform Plan
         required: false
-        default: false
     secrets:
       mastertoken:
       arm_client_id:
