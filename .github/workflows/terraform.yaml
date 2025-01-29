@@ -42,6 +42,9 @@ jobs:
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
     steps:
+      - name: Mode Check
+        run: echo "::title=WORKFLOW RUNNING IN DESTRUCTIVE MODE::Warning this workflow is running in destructive mode"
+        if: ${{ inputs.mode == 'destroy'}}
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Setup Terraform
