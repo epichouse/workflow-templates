@@ -20,6 +20,11 @@ on:
       directory:
         type: string
         description: Terraform Working Directory
+      apply:
+        type: boolean
+        description: Apply Terraform Plan
+        required: false
+        default: false
     secrets:
       mastertoken:
       arm_client_id:
@@ -57,12 +62,6 @@ jobs:
       - name: Upload Plan for Apply
         run: az storage blob upload --account-name ${{ secrets.AZURE_STORAGE_ACCOUNT_NAME }} --container-name ${{ secrets.AZURE_STORAGE_CONTAINER_NAME }} --name plans/tfplan-${{inputs.mode}}-${{ github.sha }} --file tfplan --auth-mode login --overwrite
 
-
-
-      #  uses: actions/upload-artifact@v3
-      #  with:
-      #    name: tfplan
-      #    path: ./${{ inputs.directory }}/tfplan
   apply:
     name: Terraform Apply
     runs-on: ${{ inputs.site }}
@@ -70,8 +69,7 @@ jobs:
       run:
         working-directory: ./${{ inputs.directory }}
     needs: plan
-    environment:
-      name: ${{inputs.environment}}
+    if: inputs.apply == true
     env:
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
@@ -84,14 +82,6 @@ jobs:
         run: az login --service-principal -u ${{secrets.ARM_CLIENT_ID}} -p ${{ secrets.ARM_CLIENT_SECRET }} --tenant ${{ secrets.ARM_TENANT_ID }}
       - name: Download Plan
         run: az storage blob download --account-name ${{ secrets.AZURE_STORAGE_ACCOUNT_NAME }} --container-name ${{ secrets.AZURE_STORAGE_CONTAINER_NAME }} --name plans/tfplan-${{inputs.mode}}-${{ github.sha }} --file tfplan
-
-
-
-        #uses: actions/download-artifact@v3
-        #with:
-        #  name: tfplan
-        #  path: ./${{ inputs.directory }}
-
       - name: Terraform Init
         run: terraform init -backend-config="storage_account_name=${{ secrets.AZURE_STORAGE_ACCOUNT_NAME }}" -backend-config="container_name=${{ secrets.AZURE_STORAGE_CONTAINER_NAME }}" -backend-config="key=${{ inputs.state_file }}" -backend-config="use_azuread_auth=true" -backend-config="client_secret=${{ secrets.ARM_CLIENT_SECRET }}" -backend-config="client_id=${{ secrets.ARM_CLIENT_ID }}"
       - name: Terraform Apply
