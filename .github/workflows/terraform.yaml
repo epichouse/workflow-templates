@@ -23,7 +23,7 @@ on:
       execute_apply:
         type: boolean
         description: Apply Terraform Plan
-        required: true
+        required: false
         default: false
     secrets:
       mastertoken:
