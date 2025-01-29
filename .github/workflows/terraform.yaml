@@ -21,7 +21,7 @@ on:
         type: string
         description: Terraform Working Directory
       execute_apply:
-        type: boolean
+        type: string
         description: Apply Terraform Plan
         required: false
         default: false
