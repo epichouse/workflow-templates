@@ -28,7 +28,7 @@ on:
       vault_password:
 jobs:
   multisite:
-    uses: ./.github/workflows/step-multisite-playbook.yaml
+    uses: ./.github/workflows/ansible-playbook.multisite.yaml
     if: inputs.multisite == true
     with:
       playbook: ${{ inputs.playbook }}
@@ -39,7 +39,7 @@ jobs:
       mastertoken: ${{ secrets.mastertoken }}
       vault_password: ${{ secrets.vault_password }}
   singlesite:
-    uses: ./.github/workflows/step-singlesite-playbook.yaml
+    uses: ./.github/workflows/ansible-playbook.singlesite.yaml
     if: inputs.multisite == false
     with:
       playbook: ${{ inputs.playbook }}
