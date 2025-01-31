@@ -67,8 +67,6 @@ jobs:
         shell: bash
         env:
           PASS: ${{ secrets.VAULT_PASSWORD }}
-      - name: List dir
-        run: ls -la
       - name: Run Playbook
         run: ansible-playbook playbooks/${{ inputs.playbook }}.yml ${{ inputs.additional_parameters }} --extra-vars "ansible_sudo_pass=${{ secrets.SUDO_PASSWORD }}"
       - name: Cleanup Vault Password File
