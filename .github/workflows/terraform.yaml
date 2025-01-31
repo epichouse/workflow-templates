@@ -3,7 +3,7 @@ on:
     inputs:
       mode:
         required: false
-        default: 'deploy'
+        default: deploy
         type: string
         description: The mode of the workflow (deploy/destroy)
       site:
