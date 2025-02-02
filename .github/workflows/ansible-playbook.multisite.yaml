@@ -32,6 +32,14 @@ jobs:
         uses: actions/checkout@v4
         with:
           path: "${{ github.event.repository.name }}"
+      - name: Checkout Repository (ansible-core)
+        uses: actions/checkout@v4
+        with:
+          path: ansible-core
+          token: ${{secrets.mastertoken}}
+          ref: 'main'
+          repository: 'epichouse/ansible-core'
+        if: ${{ github.event.repository.name }} != 'ansible-core'
       - name: Checkout Repository (ansible-vault)
         uses: actions/checkout@v4
         with:
@@ -76,6 +84,14 @@ jobs:
         uses: actions/checkout@v4
         with:
           path: "${{ github.event.repository.name }}"
+      - name: Checkout Repository (ansible-core)
+        uses: actions/checkout@v4
+        with:
+          path: ansible-core
+          token: ${{secrets.mastertoken}}
+          ref: 'main'
+          repository: 'epichouse/ansible-core'
+        if: ${{ github.event.repository.name }} != 'ansible-core'
       - name: Checkout Repository (ansible-vault)
         uses: actions/checkout@v4
         with:
