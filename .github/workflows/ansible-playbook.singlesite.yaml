@@ -41,7 +41,7 @@ jobs:
           token: ${{secrets.mastertoken}}
           ref: 'main'
           repository: 'epichouse/ansible-core'
-        if: ${{ github.event.repository.name }} != 'ansible-core'
+        if: ${{ github.event.repository.name != 'epichouse/ansible-core' }}
       - name: Checkout Repository (ansible-vault)
         uses: actions/checkout@v4
         with:
