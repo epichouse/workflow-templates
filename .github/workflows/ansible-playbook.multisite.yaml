@@ -28,7 +28,7 @@ jobs:
     env:
       site: london
     steps:
-      - name: Checkout Repository ("${{ github.event.repository.name }}")
+      - name: Checkout Repository (${{ github.event.repository.name }})
         uses: actions/checkout@v4
         with:
           path: "${{ github.event.repository.name }}"
@@ -80,7 +80,7 @@ jobs:
     env:
       site: manchester
     steps:
-      - name: Checkout Repository ("${{ github.event.repository.name }}")
+      - name: Checkout Repository (${{ github.event.repository.name }})
         uses: actions/checkout@v4
         with:
           path: "${{ github.event.repository.name }}"
