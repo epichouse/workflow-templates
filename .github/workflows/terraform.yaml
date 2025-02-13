@@ -65,7 +65,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: tfplan
-          path: ./${{ inputs.directory }}/tfplan
+          path: ${{ inputs.directory }}/tfplan
 
   apply:
     name: Terraform Apply
