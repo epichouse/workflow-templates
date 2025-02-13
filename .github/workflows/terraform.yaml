@@ -62,7 +62,7 @@ jobs:
         run: terraform plan -out=tfplan -destroy
         if: inputs.mode == 'destroy'
       - name: Upload Plan for Apply
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: tfplan
           path: ./${{ inputs.directory }}/tfplan
@@ -87,7 +87,7 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
       - name: Download Plan
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: tfplan
           path: ./${{ inputs.directory }}
