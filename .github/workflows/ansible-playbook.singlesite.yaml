@@ -18,8 +18,8 @@ on:
           type: string
           description: Additional Parameters to Ansible command
         ansible_verbose_logging:
-          type: boolean
-          default: false
+          type: string
+          default: 'false'
           description: Enable or disable verbose logging
           required: false
       secrets:

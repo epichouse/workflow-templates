@@ -23,9 +23,9 @@ on:
         type: string
         description: Additional Parameters to Ansible command
       ansible_verbose_logging:
-        type: boolean
+        type: string
         description: Ansible Verbose Logging Enabled
-        default: false
+        default: 'false'
         required: false
     secrets:
       sudo_password:  
