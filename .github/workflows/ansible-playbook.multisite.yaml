@@ -74,7 +74,7 @@ jobs:
           PASS: ${{ secrets.VAULT_PASSWORD }}
       - name: Determine Verbosity Setting
         run: echo "::set-output name=verbose_logs::-vvv"
-        if: ${{ inputs.ansible_verbose_logging == true}}
+        if: ${{ inputs.ansible_verbose_logging == true }} or ${{vars.ansible_verbose_logging == true}}
       - name: Run Playbook
         run: ansible-playbook playbooks/${{ inputs.playbook }}.yml ${{ inputs.additional_parameters }} ${{ env.verbose_logs}} --extra-vars "ansible_sudo_pass=${{ secrets.SUDO_PASSWORD }} site=$site"
       - name: Cleanup Vault Password File
@@ -130,7 +130,7 @@ jobs:
           PASS: ${{ secrets.VAULT_PASSWORD }}
       - name: Determine Verbosity Setting
         run: echo "::set-output name=verbose_logs::-vvv"
-        if: ${{ inputs.ansible_verbose_logging == true}}
+        if: ${{ inputs.ansible_verbose_logging == true }} or ${{vars.ansible_verbose_logging == true}}
       - name: Run Playbook
         run: ansible-playbook playbooks/${{ inputs.playbook }}.yml ${{ inputs.additional_parameters }} ${{ env.verbose_logs}}  --extra-vars "ansible_sudo_pass=${{ secrets.SUDO_PASSWORD }} site=$site"
       - name: Cleanup Vault Password File
