@@ -14,7 +14,7 @@ on:
       site:
         type: string
         description: Site used for job execution on non multisite jobs
-      additional_parameters:
+      ansible_additional_parameters:
         type: string
         description: Additional Parameters to Ansible command
       ansible_verbose_logging:
@@ -32,7 +32,7 @@ jobs:
     if: inputs.multisite == true
     with:
       ansible_playbook: ${{ inputs.ansible_playbook }}
-      additional_parameters: ${{ inputs.additional_parameters }}
+      ansible_additional_parameters: ${{ inputs.ansible_additional_parameters }}
       ansible_verbose_logging: ${{inputs.ansible_verbose_logging}}
     secrets:
       sudo_password: ${{ secrets.sudo_password }}
@@ -44,7 +44,7 @@ jobs:
     with:
       ansible_playbook: ${{ inputs.ansible_playbook }}
       site: ${{ inputs.site }}
-      additional_parameters: ${{ inputs.additional_parameters }}
+      ansible_additional_parameters: ${{ inputs.ansible_additional_parameters }}
       ansible_verbose_logging: ${{inputs.ansible_verbose_logging}}
     secrets:
       sudo_password: ${{ secrets.sudo_password }}

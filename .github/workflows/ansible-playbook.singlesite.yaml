@@ -9,7 +9,7 @@ on:
           required: true
           type: string
           description: site to execute against
-        additional_parameters:
+        ansible_additional_parameters:
           type: string
           description: Additional Parameters to Ansible command
         ansible_verbose_logging:
@@ -74,7 +74,7 @@ jobs:
         run: echo "verbose_logs=-vvv" >> $GITHUB_ENV
         if: ${{ inputs.ansible_verbose_logging  == 'true' }}
       - name: Run Playbook
-        run: ansible-playbook ${{ inputs.ansible_playbook }} ${{ inputs.additional_parameters }} ${{ env.verbose_logs}} --extra-vars "ansible_sudo_pass=${{ secrets.SUDO_PASSWORD }}"
+        run: ansible-playbook ${{ inputs.ansible_playbook }} ${{ inputs.ansible_additional_parameters }} ${{ env.verbose_logs}} --extra-vars "ansible_sudo_pass=${{ secrets.SUDO_PASSWORD }}"
       - name: Cleanup Vault Password File
         run: rm ~/.vault
         if: always()
