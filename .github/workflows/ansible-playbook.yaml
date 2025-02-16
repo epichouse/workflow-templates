@@ -14,11 +14,6 @@ on:
       site:
         type: string
         description: Site used for job execution on non multisite jobs
-      checkout_software:
-        required: false
-        type: boolean
-        description: Checkout software repositories
-        default: false
       additional_parameters:
         type: string
         description: Additional Parameters to Ansible command
@@ -37,7 +32,6 @@ jobs:
     if: inputs.multisite == true
     with:
       playbook: ${{ inputs.playbook }}
-      checkout_software: ${{ inputs.checkout_software }}
       additional_parameters: ${{ inputs.additional_parameters }}
       ansible_verbose_logging: ${{inputs.ansible_verbose_logging}}
     secrets:
@@ -50,7 +44,6 @@ jobs:
     with:
       playbook: ${{ inputs.playbook }}
       site: ${{ inputs.site }}
-      checkout_software: ${{ inputs.checkout_software }}
       additional_parameters: ${{ inputs.additional_parameters }}
       ansible_verbose_logging: ${{inputs.ansible_verbose_logging}}
     secrets:

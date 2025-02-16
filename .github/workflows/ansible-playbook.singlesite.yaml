@@ -5,11 +5,6 @@ on:
           required: true
           type: string
           description: ansible playbook to be executed
-        checkout_software:
-          required: true
-          type: boolean
-          description: Checkout software repositorie
-          default: false
         site:
           required: true
           type: string
