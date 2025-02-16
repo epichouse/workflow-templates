@@ -3,7 +3,7 @@ name: Template - Execute Ansible Role
 on:
   workflow_call:
     inputs:
-      playbook:
+      ansible_playbook:
         required: true
         type: string
         description: ansible playbook to be executed
@@ -31,7 +31,7 @@ jobs:
     uses: ./.github/workflows/ansible-playbook.multisite.yaml
     if: inputs.multisite == true
     with:
-      playbook: ${{ inputs.playbook }}
+      ansible_playbook: ${{ inputs.ansible_playbook }}
       additional_parameters: ${{ inputs.additional_parameters }}
       ansible_verbose_logging: ${{inputs.ansible_verbose_logging}}
     secrets:
@@ -42,7 +42,7 @@ jobs:
     uses: ./.github/workflows/ansible-playbook.singlesite.yaml
     if: inputs.multisite == false
     with:
-      playbook: ${{ inputs.playbook }}
+      ansible_playbook: ${{ inputs.ansible_playbook }}
       site: ${{ inputs.site }}
       additional_parameters: ${{ inputs.additional_parameters }}
       ansible_verbose_logging: ${{inputs.ansible_verbose_logging}}

@@ -1,7 +1,7 @@
 on:
     workflow_call:
       inputs:
-        playbook:
+        ansible_playbook:
             required: true
             type: string
             description: ansible playbook to be executed
@@ -71,7 +71,7 @@ jobs:
         run: echo "verbose_logs=-vvv" >> $GITHUB_ENV
         if: ${{ inputs.ansible_verbose_logging  == 'true' }}
       - name: Run Playbook
-        run: ansible-playbook playbooks/${{ inputs.playbook }}.yml ${{ inputs.additional_parameters }} ${{ env.verbose_logs}} --extra-vars "ansible_sudo_pass=${{ secrets.SUDO_PASSWORD }} site=$site"
+        run: ansible-playbook ${{ inputs.ansible_playbook }} ${{ inputs.additional_parameters }} ${{ env.verbose_logs}} --extra-vars "ansible_sudo_pass=${{ secrets.SUDO_PASSWORD }} site=$site"
       - name: Cleanup Vault Password File
         run: rm ~/.vault
         if: always()
@@ -127,7 +127,7 @@ jobs:
         run: echo "verbose_logs=-vvv" >> $GITHUB_ENV
         if: ${{ inputs.ansible_verbose_logging  == 'true' }}
       - name: Run Playbook
-        run: ansible-playbook playbooks/${{ inputs.playbook }}.yml ${{ inputs.additional_parameters }} ${{ env.verbose_logs}}  --extra-vars "ansible_sudo_pass=${{ secrets.SUDO_PASSWORD }} site=$site"
+        run: ansible-playbook ${{ inputs.ansible_playbook }} ${{ inputs.additional_parameters }} ${{ env.verbose_logs}}  --extra-vars "ansible_sudo_pass=${{ secrets.SUDO_PASSWORD }} site=$site"
       - name: Cleanup Vault Password File
         run: rm ~/.vault
         if: always()
