@@ -22,6 +22,11 @@ on:
       additional_parameters:
         type: string
         description: Additional Parameters to Ansible command
+      ansible_verbose_logging:
+        type: boolean
+        description: Ansible Verbose Logging Enabled
+        default: false
+        required: false
     secrets:
       sudo_password:  
       mastertoken:
@@ -34,6 +39,7 @@ jobs:
       playbook: ${{ inputs.playbook }}
       checkout_software: ${{ inputs.checkout_software }}
       additional_parameters: ${{ inputs.additional_parameters }}
+      ansible_verbose_logging: ${{inputs.ansible_verbose_logging}}
     secrets:
       sudo_password: ${{ secrets.sudo_password }}
       mastertoken: ${{ secrets.mastertoken }}
@@ -46,6 +52,7 @@ jobs:
       site: ${{ inputs.site }}
       checkout_software: ${{ inputs.checkout_software }}
       additional_parameters: ${{ inputs.additional_parameters }}
+      ansible_verbose_logging: ${{inputs.ansible_verbose_logging}}
     secrets:
       sudo_password: ${{ secrets.sudo_password }}
       mastertoken: ${{ secrets.mastertoken }}
