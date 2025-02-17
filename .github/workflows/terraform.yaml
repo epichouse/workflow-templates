@@ -59,7 +59,7 @@ jobs:
         run: terraform plan -out=tfplan-${{ inputs.mode}}
         if: inputs.mode == 'deploy'
       - name: Terraform Plan (Destroy Mode)
-        run: terraform plan -out=tfplan -destroy
+        run: terraform plan -out=tfplan-${{ inputs.mode}} -destroy
         if: inputs.mode == 'destroy'
       - name: Upload Plan for Apply
         uses: actions/upload-artifact@v4
