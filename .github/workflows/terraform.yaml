@@ -96,4 +96,4 @@ jobs:
       - name: Terraform Init
         run: terraform init -backend-config="storage_account_name=${{ secrets.AZURE_STORAGE_ACCOUNT_NAME }}" -backend-config="container_name=${{ secrets.AZURE_STORAGE_CONTAINER_NAME }}" -backend-config="key=${{ inputs.state_file }}" -backend-config="use_azuread_auth=true" -backend-config="client_secret=${{ secrets.ARM_CLIENT_SECRET }}" -backend-config="client_id=${{ secrets.ARM_CLIENT_ID }}"
       - name: Terraform Apply
-        run: terraform apply -auto-approve "tfplan-${{ inputs.mode}}"   
+        run: terraform apply -auto-approve "tfplan"   
