@@ -56,7 +56,7 @@ jobs:
       - name: Terraform Init
         run: terraform init -backend-config="storage_account_name=${{ secrets.AZURE_STORAGE_ACCOUNT_NAME }}" -backend-config="container_name=${{ secrets.AZURE_STORAGE_CONTAINER_NAME }}" -backend-config="key=${{ inputs.state_file }}" -backend-config="use_azuread_auth=true" -backend-config="client_secret=${{ secrets.ARM_CLIENT_SECRET }}" -backend-config="client_id=${{ secrets.ARM_CLIENT_ID }}"
       - name: Terraform Plan (Deploy Mode)
-        run: terraform plan -out=tfplan
+        run: terraform plan -out=tfplan-${{ inputs.mode}}
         if: inputs.mode == 'deploy'
       - name: Terraform Plan (Destroy Mode)
         run: terraform plan -out=tfplan -destroy
@@ -64,8 +64,8 @@ jobs:
       - name: Upload Plan for Apply
         uses: actions/upload-artifact@v4
         with:
-          name: tfplan
-          path: ${{ inputs.directory }}/tfplan
+          name: tfplan-${{ inputs.mode}}
+          path: ${{ inputs.directory }}/tfplan-${{ inputs.mode}}
 
   apply:
     name: Terraform Apply
@@ -89,11 +89,11 @@ jobs:
       - name: Download Plan
         uses: actions/download-artifact@v4
         with:
-          name: tfplan
+          name: tfplan-${{ inputs.mode}}
           path: ${{ inputs.directory }}/
       - name: Azure Login
         run: az login --service-principal -u ${{secrets.ARM_CLIENT_ID}} -p ${{ secrets.ARM_CLIENT_SECRET }} --tenant ${{ secrets.ARM_TENANT_ID }}
       - name: Terraform Init
         run: terraform init -backend-config="storage_account_name=${{ secrets.AZURE_STORAGE_ACCOUNT_NAME }}" -backend-config="container_name=${{ secrets.AZURE_STORAGE_CONTAINER_NAME }}" -backend-config="key=${{ inputs.state_file }}" -backend-config="use_azuread_auth=true" -backend-config="client_secret=${{ secrets.ARM_CLIENT_SECRET }}" -backend-config="client_id=${{ secrets.ARM_CLIENT_ID }}"
       - name: Terraform Apply
-        run: terraform apply -auto-approve "tfplan"   
+        run: terraform apply -auto-approve "tfplan-${{ inputs.mode}}"   
