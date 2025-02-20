@@ -33,7 +33,7 @@ jobs:
       verbose_logs: ""
     steps:
       - name: Output Runner Hostname
-        run: echo "::information title=This workflow is running on $(hostname)::This workflow is running on $(hostname)"
+        run: echo "::warning title=This workflow is running on $(hostname)::This workflow is running on $(hostname)"
       - name: Checkout Repository (${{ github.event.repository.name }})
         uses: actions/checkout@v4
         with:
