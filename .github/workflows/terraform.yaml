@@ -68,7 +68,7 @@ jobs:
         env:
           PASS: ${{ secrets.VAULT_PASSWORD }}
       - name: Decrypt Ansible Vault
-        run:  ls -la && ansible-vault decrypt ../ansible-vault/vaults/prod.yml --vault-password-file ~/.vault
+        run:  ls -la && ansible-vault decrypt ../../../../../../ansible-vault/vaults/prod.yml --vault-password-file ~/.vault
 
 
 
