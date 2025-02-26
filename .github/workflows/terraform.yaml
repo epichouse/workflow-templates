@@ -30,6 +30,7 @@ on:
       arm_tenant_id:
       azure_storage_account_name:
       azure_storage_container_name:
+      vault_password:
 
 jobs:
   plan:
