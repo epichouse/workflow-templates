@@ -47,12 +47,29 @@ jobs:
         if: ${{ inputs.mode == 'destroy'}}
       - name: Checkout code
         uses: actions/checkout@v3
+      - name: Checkout Repository (ansible-vault)
+        uses: actions/checkout@v4
+        with:
+          path: ansible-vault
+          token: ${{secrets.mastertoken}}
+          ref: 'main'
+          repository: 'epichouse/ansible-vault'
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
       - name: Azure Login
         run: az login --service-principal -u ${{secrets.ARM_CLIENT_ID}} -p ${{ secrets.ARM_CLIENT_SECRET }} --tenant ${{ secrets.ARM_TENANT_ID }}
       - name: Configure GitHub Authentication
         run: git config --global url."https://${{secrets.MASTERTOKEN }}@github.com".insteadOf "https://github.com"
+      - name: Populate Vault Password File
+        run: echo $PASS > ~/.vault
+        shell: bash
+        env:
+          PASS: ${{ secrets.VAULT_PASSWORD }}
+      - name: Decrypt Ansible Vault
+        run:  ansible-vault decrypt ansible-vault/vaults/prod.yml --vault-password-file ~/.vault
+
+
+
       - name: Terraform Init
         run: terraform init -backend-config="storage_account_name=${{ secrets.AZURE_STORAGE_ACCOUNT_NAME }}" -backend-config="container_name=${{ secrets.AZURE_STORAGE_CONTAINER_NAME }}" -backend-config="key=${{ inputs.state_file }}" -backend-config="use_azuread_auth=true" -backend-config="client_secret=${{ secrets.ARM_CLIENT_SECRET }}" -backend-config="client_id=${{ secrets.ARM_CLIENT_ID }}"
       - name: Terraform Plan (Deploy Mode)
