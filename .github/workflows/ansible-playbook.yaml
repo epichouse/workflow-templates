@@ -26,6 +26,9 @@ on:
       sudo_password:  
       mastertoken:
       vault_password:
+      arm_client_id:
+      arm_client_secret:
+      arm_tenant_id:
 jobs:
   multisite:
     uses: ./.github/workflows/ansible-playbook.multisite.yaml
@@ -38,6 +41,9 @@ jobs:
       sudo_password: ${{ secrets.sudo_password }}
       mastertoken: ${{ secrets.mastertoken }}
       vault_password: ${{ secrets.vault_password }}
+      arm_client_id: ${{ secrets.arm_client_id }}
+      arm_client_secret: ${{ secrets.arm_client_secret }}
+      arm_tenant_id: ${{ secrets.arm_tenant_id }}
   singlesite:
     uses: ./.github/workflows/ansible-playbook.singlesite.yaml
     if: inputs.multisite == false
@@ -50,3 +56,6 @@ jobs:
       sudo_password: ${{ secrets.sudo_password }}
       mastertoken: ${{ secrets.mastertoken }}
       vault_password: ${{ secrets.vault_password }}
+      arm_client_id: ${{ secrets.arm_client_id }}
+      arm_client_secret: ${{ secrets.arm_client_secret }}
+      arm_tenant_id: ${{ secrets.arm_tenant_id }}

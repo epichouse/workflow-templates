@@ -17,6 +17,9 @@ on:
         sudo_password:  
         mastertoken:
         vault_password:
+        arm_client_id:
+        arm_client_secret:
+        arm_tenant_id:
 
 jobs:
   london:
