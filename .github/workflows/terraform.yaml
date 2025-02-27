@@ -83,7 +83,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: tfplan-${{ inputs.mode}}
-          path: ${{ github.event.repository.name }}/${{ inputs.directory }}/tfplan
+          path: ./${{ inputs.directory }}/tfplan
 
   apply:
     name: Terraform Apply
@@ -124,7 +124,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: tfplan-${{ inputs.mode}}
-          path: ${{ github.event.repository.name }}/${{ inputs.directory }}/
+          path: ./${{ inputs.directory }}/
       - name: Azure Login
         run: az login --service-principal -u ${{secrets.ARM_CLIENT_ID}} -p ${{ secrets.ARM_CLIENT_SECRET }} --tenant ${{ secrets.ARM_TENANT_ID }}
       - name: Terraform Init
