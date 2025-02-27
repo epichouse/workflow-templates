@@ -37,7 +37,7 @@ jobs:
     runs-on: ${{ inputs.site }}
     defaults:
       run:
-        working-directory: "${{ github.event.repository.name }}/${{ inputs.directory }}"
+        working-directory: ./${{ inputs.directory }}
     env:
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
@@ -45,10 +45,8 @@ jobs:
       - name: Mode Check
         run: echo "::warning title=WORKFLOW RUNNING IN DESTRUCTIVE MODE::Warning this workflow is running in destructive mode"
         if: ${{ inputs.mode == 'destroy'}}
-      - name: Checkout Repository (${{ github.event.repository.name }})
+      - name: Checkout Repository
         uses: actions/checkout@v4
-        with:
-          path: "${{ github.event.repository.name }}"
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
       - name: Azure Login
