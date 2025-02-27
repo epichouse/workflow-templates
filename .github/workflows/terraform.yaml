@@ -71,7 +71,7 @@ jobs:
       - name: Decrypt Ansible Vault
         run:  ls -la && ansible-vault decrypt "../../../../../ansible-vault/vaults/prod.yml" --vault-password-file ~/.vault
       - name: Terraform Init
-        run: terraform init -backend-config="storage_account_name=${{ secrets.AZURE_STORAGE_ACCOUNT_NAME }}" -backend-config="container_name=${{ secrets.AZURE_STORAGE_CONTAINER_NAME }}" -backend-config="key=${{ inputs.state_file }}" -backend-config="use_azuread_auth=true" -backend-config="client_secret=${{ secrets.ARM_CLIENT_SECRET }}" -backend-config="client_id=${{ secrets.ARM_CLIENT_ID }}" -backend-config="resource-group=rg-iacbackend-prod"
+        run: terraform init -backend-config="storage_account_name=${{ secrets.AZURE_STORAGE_ACCOUNT_NAME }}" -backend-config="container_name=${{ secrets.AZURE_STORAGE_CONTAINER_NAME }}" -backend-config="key=${{ inputs.state_file }}" -backend-config="use_azuread_auth=true" -backend-config="client_secret=${{ secrets.ARM_CLIENT_SECRET }}" -backend-config="client_id=${{ secrets.ARM_CLIENT_ID }}" -backend-config="resource_group_name=rg-iacbackend-prod"
       - name: Terraform Plan (Deploy Mode)
         run: terraform plan -out=tfplan
         if: inputs.mode == 'deploy'
