@@ -69,7 +69,7 @@ jobs:
         env:
           PASS: ${{ secrets.VAULT_PASSWORD }}
       - name: Decrypt Ansible Vault
-        run:  ls -la && ansible-vault decrypt "../../../../../../ansible-vault/vaults/prod.yml" --vault-password-file ~/.vault
+        run:  ls -la && ansible-vault decrypt "../../../../../ansible-vault/vaults/prod.yml" --vault-password-file ~/.vault
       - name: Terraform Init
         run: terraform init -backend-config="storage_account_name=${{ secrets.AZURE_STORAGE_ACCOUNT_NAME }}" -backend-config="container_name=${{ secrets.AZURE_STORAGE_CONTAINER_NAME }}" -backend-config="key=${{ inputs.state_file }}" -backend-config="use_azuread_auth=true" -backend-config="client_secret=${{ secrets.ARM_CLIENT_SECRET }}" -backend-config="client_id=${{ secrets.ARM_CLIENT_ID }}"
       - name: Terraform Plan (Deploy Mode)
@@ -116,7 +116,7 @@ jobs:
         env:
           PASS: ${{ secrets.VAULT_PASSWORD }}
       - name: Decrypt Ansible Vault
-        run:  ls -la && ansible-vault decrypt "../../../../../../ansible-vault/vaults/prod.yml" --vault-password-file ~/.vault
+        run:  ls -la && ansible-vault decrypt "../../../../../ansible-vault/vaults/prod.yml" --vault-password-file ~/.vault
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
       - name: Download Plan
