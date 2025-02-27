@@ -30,6 +30,7 @@ on:
       arm_tenant_id:
       azure_storage_account_name:
       azure_storage_container_name:
+      vault_password:
 
 jobs:
   plan:
@@ -37,7 +38,7 @@ jobs:
     runs-on: ${{ inputs.site }}
     defaults:
       run:
-        working-directory: ./${{ inputs.directory }}
+        working-directory: "${{ github.event.repository.name }}/${{ inputs.directory }}"
     env:
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
@@ -45,14 +46,30 @@ jobs:
       - name: Mode Check
         run: echo "::warning title=WORKFLOW RUNNING IN DESTRUCTIVE MODE::Warning this workflow is running in destructive mode"
         if: ${{ inputs.mode == 'destroy'}}
-      - name: Checkout Repository
+      - name: Checkout Repository (${{ github.event.repository.name }})
         uses: actions/checkout@v4
+        with:
+          path: "${{ github.event.repository.name }}"
+      - name: Checkout Repository (ansible-vault)
+        uses: actions/checkout@v4
+        with:
+          path: ansible-vault
+          token: ${{secrets.mastertoken}}
+          ref: 'main'
+          repository: 'epichouse/ansible-vault'
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
       - name: Azure Login
         run: az login --service-principal -u ${{secrets.ARM_CLIENT_ID}} -p ${{ secrets.ARM_CLIENT_SECRET }} --tenant ${{ secrets.ARM_TENANT_ID }}
       - name: Configure GitHub Authentication
         run: git config --global url."https://${{secrets.MASTERTOKEN }}@github.com".insteadOf "https://github.com"
+      - name: Populate Vault Password File
+        run: echo $PASS > ~/.vault
+        shell: bash
+        env:
+          PASS: ${{ secrets.VAULT_PASSWORD }}
+      - name: Decrypt Ansible Vault
+        run:  ls -la && ansible-vault decrypt "../../../../../../ansible-vault/vaults/prod.yml" --vault-password-file ~/.vault
       - name: Terraform Init
         run: terraform init -backend-config="storage_account_name=${{ secrets.AZURE_STORAGE_ACCOUNT_NAME }}" -backend-config="container_name=${{ secrets.AZURE_STORAGE_CONTAINER_NAME }}" -backend-config="key=${{ inputs.state_file }}" -backend-config="use_azuread_auth=true" -backend-config="client_secret=${{ secrets.ARM_CLIENT_SECRET }}" -backend-config="client_id=${{ secrets.ARM_CLIENT_ID }}"
       - name: Terraform Plan (Deploy Mode)
@@ -65,7 +82,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: tfplan-${{ inputs.mode}}
-          path: ${{ inputs.directory }}/tfplan
+          path: ${{ github.event.repository.name }}/${{ inputs.directory }}/tfplan
 
   apply:
     name: Terraform Apply
@@ -82,15 +99,31 @@ jobs:
       - name: Mode Check
         run: echo "::warning title=WORKFLOW RUNNING IN DESTRUCTIVE MODE::Warning this workflow is running in destructive mode"
         if: ${{ inputs.mode == 'destroy'}}
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: Checkout Repository (${{ github.event.repository.name }})
+        uses: actions/checkout@v4
+        with:
+          path: "${{ github.event.repository.name }}"
+      - name: Checkout Repository (ansible-vault)
+        uses: actions/checkout@v4
+        with:
+          path: ansible-vault
+          token: ${{secrets.mastertoken}}
+          ref: 'main'
+          repository: 'epichouse/ansible-vault'
+      - name: Populate Vault Password File
+        run: echo $PASS > ~/.vault
+        shell: bash
+        env:
+          PASS: ${{ secrets.VAULT_PASSWORD }}
+      - name: Decrypt Ansible Vault
+        run:  ls -la && ansible-vault decrypt "../../../../../../ansible-vault/vaults/prod.yml" --vault-password-file ~/.vault
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
       - name: Download Plan
         uses: actions/download-artifact@v4
         with:
           name: tfplan-${{ inputs.mode}}
-          path: ${{ inputs.directory }}/
+          path: ${{ github.event.repository.name }}/${{ inputs.directory }}/
       - name: Azure Login
         run: az login --service-principal -u ${{secrets.ARM_CLIENT_ID}} -p ${{ secrets.ARM_CLIENT_SECRET }} --tenant ${{ secrets.ARM_TENANT_ID }}
       - name: Terraform Init
