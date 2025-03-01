@@ -39,7 +39,7 @@ jobs:
     runs-on: ${{ inputs.site }}
     defaults:
       run:
-        working-directory: "${{ github.event.repository.name }}/${{ inputs.directory }}"
+        working-directory: "${{ github.event.repository.name }}"
     env:
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
@@ -70,22 +70,25 @@ jobs:
         env:
           PASS: ${{ secrets.VAULT_PASSWORD }}
       - name: Decrypt Ansible Vault
-        run:  ansible-vault decrypt "../../../../../ansible-vault/vault.yml" --vault-password-file ~/.vault
+        run:  ansible-vault decrypt "../ansible-vault/vault.yml" --vault-password-file ~/.vault
       - name: Terraform Init
         run: terraform init -backend-config="storage_account_name=${{ secrets.AZURE_STORAGE_ACCOUNT_NAME }}" -backend-config="container_name=${{ secrets.AZURE_STORAGE_CONTAINER_NAME }}" -backend-config="key=${{ inputs.state_file }}" -backend-config="use_azuread_auth=true" -backend-config="client_secret=${{ secrets.ARM_CLIENT_SECRET }}" -backend-config="client_id=${{ secrets.ARM_CLIENT_ID }}" -backend-config="resource_group_name=${{ secrets.AZURE_RESOURCE_GROUP_NAME }}"
+        working-directory: "${{ github.event.repository.name }}/${{ inputs.directory }}"
       - name: Terraform Plan (Deploy Mode)
         run: terraform plan -out=tfplan
         if: inputs.mode == 'deploy'
+        working-directory: "${{ github.event.repository.name }}/${{ inputs.directory }}"
       - name: Terraform Plan (Destroy Mode)
         run: terraform plan -out=tfplan -destroy
         if: inputs.mode == 'destroy'
+        working-directory: "${{ github.event.repository.name }}/${{ inputs.directory }}"
       - name: Upload Plan for Apply
         uses: actions/upload-artifact@v4
         with:
           name: tfplan-${{ inputs.mode}}
           path: ${{ github.event.repository.name }}/${{ inputs.directory }}/tfplan
       - name: Remove Ansible Vault
-        run:  sudo rm -r "../../../../../ansible-vault/"
+        run:  sudo rm -r "../ansible-vault/"
         if: always()
 
   apply:
@@ -93,7 +96,7 @@ jobs:
     runs-on: ${{ inputs.site }}
     defaults:
       run:
-        working-directory: "${{ github.event.repository.name }}/${{ inputs.directory }}"
+        working-directory: "${{ github.event.repository.name }}"
     needs: plan
     if: ${{ inputs.execute_apply == 'true' }} 
     env:
@@ -120,7 +123,7 @@ jobs:
         env:
           PASS: ${{ secrets.VAULT_PASSWORD }}
       - name: Decrypt Ansible Vault
-        run:  ansible-vault decrypt "../../../../../ansible-vault/vault.yml" --vault-password-file ~/.vault
+        run:  ansible-vault decrypt "../ansible-vault/vault.yml" --vault-password-file ~/.vault
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
       - name: Download Plan
@@ -132,8 +135,10 @@ jobs:
         run: az login --service-principal -u ${{secrets.ARM_CLIENT_ID}} -p ${{ secrets.ARM_CLIENT_SECRET }} --tenant ${{ secrets.ARM_TENANT_ID }}
       - name: Terraform Init
         run: terraform init -backend-config="storage_account_name=${{ secrets.AZURE_STORAGE_ACCOUNT_NAME }}" -backend-config="container_name=${{ secrets.AZURE_STORAGE_CONTAINER_NAME }}" -backend-config="key=${{ inputs.state_file }}" -backend-config="use_azuread_auth=true" -backend-config="client_secret=${{ secrets.ARM_CLIENT_SECRET }}" -backend-config="client_id=${{ secrets.ARM_CLIENT_ID }}" -backend-config="resource_group_name=${{ secrets.AZURE_RESOURCE_GROUP_NAME }}"
+        working-directory: "${{ github.event.repository.name }}/${{ inputs.directory }}"
       - name: Terraform Apply
-        run: terraform apply -auto-approve "tfplan"   
+        run: terraform apply -auto-approve "tfplan"
+        working-directory: "${{ github.event.repository.name }}/${{ inputs.directory }}"
       - name: Remove Ansible Vault
-        run:  sudo rm -r "../../../../../ansible-vault/"
+        run:  sudo rm -r "../ansible-vault/"
         if: always()
