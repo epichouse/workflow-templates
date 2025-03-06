@@ -67,13 +67,6 @@ jobs:
           token: ${{secrets.mastertoken}}
           ref: 'main'
           repository: 'epichouse/ansible-vault'
-      - name: Checkout Repository (ansible-vault)
-        uses: actions/checkout@v4
-        with:
-          path: ansible-vault2
-          token: ${{secrets.mastertoken}}
-          ref: 'main'
-          repository: 'epichouse/ansible-vault'
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
       - name: Azure Login
@@ -88,8 +81,6 @@ jobs:
         shell: bash
         env:
           PASS: ${{ secrets.VAULT_PASSWORD }}
-      - name: Decrypt Ansible Vault
-        run:  ansible-vault decrypt "../ansible-vault2/vault.yml" --vault-password-file ~/.vault
       - name: Terraform Init
         run: |
           terraform init \
@@ -114,9 +105,6 @@ jobs:
         with:
           name: tfplan-${{ inputs.mode}}
           path: ${{ github.event.repository.name }}/${{ inputs.directory }}/tfplan
-      - name: Remove Ansible Vault
-        run:  sudo rm -r "../ansible-vault2/"
-        if: always()
 
   apply:
     name: Terraform Apply
@@ -149,8 +137,6 @@ jobs:
         shell: bash
         env:
           PASS: ${{ secrets.VAULT_PASSWORD }}
-      - name: Decrypt Ansible Vault
-        run:  ansible-vault decrypt "../ansible-vault/vault.yml" --vault-password-file ~/.vault
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
       - name: Download Plan
@@ -179,6 +165,3 @@ jobs:
       - name: Terraform Apply
         run: terraform apply -auto-approve "tfplan"
         working-directory: "${{ github.event.repository.name }}/${{ inputs.directory }}"
-      - name: Remove Ansible Vault
-        run:  sudo rm -r "../ansible-vault/"
-        if: always()
