@@ -67,6 +67,13 @@ jobs:
           token: ${{secrets.mastertoken}}
           ref: 'main'
           repository: 'epichouse/ansible-vault'
+      - name: Checkout Repository (ansible-vault)
+        uses: actions/checkout@v4
+        with:
+          path: ansible-vault2
+          token: ${{secrets.mastertoken}}
+          ref: 'main'
+          repository: 'epichouse/ansible-vault'
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
       - name: Azure Login
