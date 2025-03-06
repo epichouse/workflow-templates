@@ -89,7 +89,7 @@ jobs:
         env:
           PASS: ${{ secrets.VAULT_PASSWORD }}
       - name: Decrypt Ansible Vault
-        run:  ansible-vault decrypt "../ansible-vault/vault.yml" --vault-password-file ~/.vault
+        run:  ansible-vault decrypt "../ansible-vault2/vault.yml" --vault-password-file ~/.vault
       - name: Terraform Init
         run: |
           terraform init \
@@ -115,7 +115,7 @@ jobs:
           name: tfplan-${{ inputs.mode}}
           path: ${{ github.event.repository.name }}/${{ inputs.directory }}/tfplan
       - name: Remove Ansible Vault
-        run:  sudo rm -r "../ansible-vault/"
+        run:  sudo rm -r "../ansible-vault2/"
         if: always()
 
   apply:
