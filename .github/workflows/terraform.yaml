@@ -92,6 +92,9 @@ jobs:
           -backend-config="client_id=${{ secrets.ARM_CLIENT_ID }}" \
           -backend-config="resource_group_name=${{ inputs.AZURE_RESOURCE_GROUP_NAME }}" \
         working-directory: "${{ github.event.repository.name }}/${{ inputs.directory }}"
+      - name: Terraform State List
+        run: terraform state list
+        working-directory: "${{ github.event.repository.name }}/${{ inputs.directory }}"
       - name: Terraform Plan (Deploy Mode)
         run: terraform plan -out=tfplan
         if: inputs.mode == 'deploy'
@@ -164,4 +167,7 @@ jobs:
         working-directory: "${{ github.event.repository.name }}/${{ inputs.directory }}"
       - name: Terraform Apply
         run: terraform apply -auto-approve "tfplan"
+        working-directory: "${{ github.event.repository.name }}/${{ inputs.directory }}"
+      - name: Terraform State List (Post Apply)
+        run: terraform state list
         working-directory: "${{ github.event.repository.name }}/${{ inputs.directory }}"
