@@ -71,6 +71,9 @@ jobs:
       - name: Set Verbosity
         run: echo "verbose_logs=-vvv" >> $GITHUB_ENV
         if: ${{ inputs.ansible_verbose_logging  == 'true' }}
+      - name: Output current Ansible Inventory
+        run: |
+          ansible-inventory --graph
       - name: Run Playbook
         run: |
           ansible-playbook ${{ inputs.ansible_playbook }} \
