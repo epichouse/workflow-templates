@@ -41,6 +41,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           path: "${{ github.event.repository.name }}"
+
       - name: Checkout Repository (ansible-core)
         uses: actions/checkout@v4
         with:
@@ -49,6 +50,7 @@ jobs:
           ref: 'main'
           repository: 'epichouse/ansible-core'
         if: ${{ github.event.repository.name != 'ansible-core' }}
+
       - name: Checkout Repository (ansible-vault)
         uses: actions/checkout@v4
         with:
@@ -56,6 +58,7 @@ jobs:
           token: ${{secrets.mastertoken}}
           ref: 'main'
           repository: 'epichouse/ansible-vault'
+
       - name: Checkout Repository (ansible-roles)
         uses: actions/checkout@v4
         with:
@@ -63,23 +66,30 @@ jobs:
           token: ${{secrets.mastertoken}}
           ref: 'main'
           repository: 'epichouse/ansible-roles'
-      - name: Populate Vault Password File
-        run: echo $PASS > ~/.vault
+
+      - name: Generate Vault Password File
+        run: |
+          echo $PASS > ~/.vault
         shell: bash
         env:
           PASS: ${{ secrets.VAULT_PASSWORD }}
-      - name: Set Verbosity
-        run: echo "verbose_logs=-vvv" >> $GITHUB_ENV
+
+      - name: Enable Verbose Flag
+        run: |
+          echo "verbose_logs=-vvv" >> $GITHUB_ENV
         if: ${{ inputs.ansible_verbose_logging  == 'true' }}
+
       - name: Output current Ansible Inventory
         run: |
           ansible-inventory --graph
+
       - name: Run Playbook
         run: |
           ansible-playbook ${{ inputs.ansible_playbook }} \
           ${{ inputs.ansible_additional_parameters }} \
           ${{ env.verbose_logs}} \
           --extra-vars "ansible_sudo_pass=${{ secrets.SUDO_PASSWORD }}" \
+
       - name: Cleanup Vault Password File
         run: rm ~/.vault
         if: always()
