@@ -6,25 +6,13 @@ on:
       docker_env:
         required: true
         type: string
-      docker_server:
-        required: true
-        type: string
-      docker_path:
-        required: true
-        type: string
       docker_project:
         required: true
         type: string
-      skip_deploy:
-        default: false
-        type: boolean
-    secrets:
-      server_username:
-        required: true
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: london
     permissions:
       contents: read
       packages: write
@@ -49,10 +37,3 @@ jobs:
           push: true
           tags: ghcr.io/${{ github.repository }}/${{inputs.docker_project}}:${{ inputs.docker_env }}
           file: ./dockerfile  # Path to the Dockerfile
-  deploy:
-    if: ${{inputs.skip_deploy == false}}
-    runs-on: self-hosted
-    needs: build
-    steps:
-      - name: Pull Image on Server
-        run: ssh  -o "StrictHostKeyChecking no" ${{ secrets.server_username }}@${{ inputs.docker_server }} "cd ${{ inputs.docker_path }}/${{inputs.docker_project}} && docker compose pull && docker compose up -d"
