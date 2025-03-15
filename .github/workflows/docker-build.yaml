@@ -3,13 +3,15 @@ name: Template - Build & Publish Docker Image
 on:
   workflow_call:
     inputs:
-      docker_env:
+      image_tag:
         required: true
         type: string
-      docker_project:
+      image_name:
         required: true
         type: string
-
+      build_path:
+        required: true
+        type: string
 jobs:
   build:
     runs-on: london
@@ -18,7 +20,7 @@ jobs:
       packages: write
     defaults:
       run:
-        working-directory: images/${{ inputs.docker_project }}/
+        working-directory: ${{ inputs.build_path }}/
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
@@ -33,7 +35,7 @@ jobs:
       - name: Build and push Docker image with env tag
         uses: docker/build-push-action@v5
         with:
-          context: "{{defaultContext}}:${{ inputs.docker_project }}"
+          context: "{{defaultContext}}:${{ inputs.image_name }}"
           push: true
-          tags: ghcr.io/${{ github.repository }}/${{inputs.docker_project}}:${{ inputs.docker_env }}
+          tags: ghcr.io/${{ github.repository }}/${{inputs.image_name}}:${{ inputs.image_tag }}
           file: ./dockerfile  # Path to the Dockerfile
