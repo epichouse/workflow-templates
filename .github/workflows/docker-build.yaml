@@ -35,7 +35,7 @@ jobs:
       - name: Build and push Docker image with env tag
         uses: docker/build-push-action@v5
         with:
-          context: "{{defaultContext}}:${{ inputs.image_name }}"
+          context: "{{defaultContext}}:${{ inputs.build_path }}"
           push: true
           tags: ghcr.io/${{ github.repository }}/${{inputs.image_name}}:${{ inputs.image_tag }}
           file: ./dockerfile  # Path to the Dockerfile
