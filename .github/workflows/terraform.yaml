@@ -40,7 +40,6 @@ on:
       arm_client_secret:
       arm_subscription_id:
       arm_tenant_id:
-      vault_password:
 
 jobs:
   plan:
@@ -60,13 +59,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           path: "${{ github.event.repository.name }}"
-      - name: Checkout Repository (ansible-vault)
-        uses: actions/checkout@v4
-        with:
-          path: ansible-vault
-          token: ${{secrets.mastertoken}}
-          ref: 'main'
-          repository: 'epichouse/ansible-vault'
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
       - name: Azure Login
@@ -76,13 +68,6 @@ jobs:
           -t ${{ secrets.ARM_TENANT_ID }} \
           -u ${{secrets.ARM_CLIENT_ID}} \
           -p ${{ secrets.ARM_CLIENT_SECRET }} \
-      - name: Populate Vault Password File
-        run: echo $PASS > ~/.vault
-        shell: bash
-        env:
-          PASS: ${{ secrets.VAULT_PASSWORD }}
-      - name: Decrypt Ansible Vault
-        run:  ansible-vault decrypt "../ansible-vault/vault.yml" --vault-password-file ~/.vault
       - name: Terraform Init
         run: |
           terraform init \
@@ -98,7 +83,7 @@ jobs:
         run: terraform state list
         working-directory: "${{ github.event.repository.name }}/${{ inputs.directory }}"
       - name: Terraform Plan (Deploy Mode)
-        run: TF_LOG=debug terraform plan -out=tfplan
+        run: terraform plan -out=tfplan
         if: inputs.mode == 'deploy'
         working-directory: "${{ github.event.repository.name }}/${{ inputs.directory }}"
       - name: Terraform Plan (Destroy Mode)
@@ -130,20 +115,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           path: "${{ github.event.repository.name }}"
-      - name: Checkout Repository (ansible-vault)
-        uses: actions/checkout@v4
-        with:
-          path: ansible-vault
-          token: ${{secrets.mastertoken}}
-          ref: 'main'
-          repository: 'epichouse/ansible-vault'
-      - name: Populate Vault Password File
-        run: echo $PASS > ~/.vault
-        shell: bash
-        env:
-          PASS: ${{ secrets.VAULT_PASSWORD }}
-      - name: Decrypt Ansible Vault
-        run:  ansible-vault decrypt "../ansible-vault/vault.yml" --vault-password-file ~/.vault
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
       - name: Download Plan

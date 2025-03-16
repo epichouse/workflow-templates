@@ -22,7 +22,6 @@ on:
     secrets:
       sudo_password:
       mastertoken:
-      vault_password:
       arm_client_id:
       arm_client_secret:
       arm_tenant_id:
@@ -51,14 +50,6 @@ jobs:
           repository: 'epichouse/ansible-core'
         if: ${{ github.event.repository.name != 'ansible-core' }}
 
-      - name: Checkout Repository (ansible-vault)
-        uses: actions/checkout@v4
-        with:
-          path: ansible-vault
-          token: ${{secrets.mastertoken}}
-          ref: 'main'
-          repository: 'epichouse/ansible-vault'
-
       - name: Checkout Repository (ansible-roles)
         uses: actions/checkout@v4
         with:
@@ -67,12 +58,13 @@ jobs:
           ref: 'main'
           repository: 'epichouse/ansible-roles'
 
-      - name: Generate Vault Password File
+      - name: Azure Login
         run: |
-          echo $PASS > ~/.vault
-        shell: bash
-        env:
-          PASS: ${{ secrets.VAULT_PASSWORD }}
+          az login \
+          --service-principal \
+          -t ${{ secrets.ARM_TENANT_ID }} \
+          -u ${{secrets.ARM_CLIENT_ID}} \
+          -p ${{ secrets.ARM_CLIENT_SECRET }} \
 
       - name: Enable Verbose Flag
         run: |
@@ -89,7 +81,3 @@ jobs:
           ${{ inputs.ansible_additional_parameters }} \
           ${{ env.verbose_logs}} \
           --extra-vars "ansible_sudo_pass=${{ secrets.SUDO_PASSWORD }}" \
-
-      - name: Cleanup Vault Password File
-        run: rm ~/.vault
-        if: always()
