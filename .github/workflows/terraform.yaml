@@ -98,7 +98,7 @@ jobs:
         run: terraform state list
         working-directory: "${{ github.event.repository.name }}/${{ inputs.directory }}"
       - name: Terraform Plan (Deploy Mode)
-        run: terraform plan -out=tfplan
+        run: TF_LOG=debug terraform plan -out=tfplan
         if: inputs.mode == 'deploy'
         working-directory: "${{ github.event.repository.name }}/${{ inputs.directory }}"
       - name: Terraform Plan (Destroy Mode)
