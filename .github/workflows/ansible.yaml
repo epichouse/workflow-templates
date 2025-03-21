@@ -50,6 +50,14 @@ jobs:
           repository: 'epichouse/ansible-core'
         if: ${{ github.event.repository.name != 'ansible-core' }}
 
+      - name: Checkout Repository (bash-scripts)
+        uses: actions/checkout@v4
+        with:
+          path: bash-scripts
+          token: ${{secrets.mastertoken}}
+          ref: 'main'
+          repository: 'epichouse/bash-scripts'
+
       - name: Checkout Repository (ansible-roles)
         uses: actions/checkout@v4
         with:
