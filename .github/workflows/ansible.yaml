@@ -32,6 +32,7 @@ on:
     secrets:
       auth_token:
       ansible_vault_password:
+        required: true
       arm_client_id:
         required: false
       arm_client_secret:
