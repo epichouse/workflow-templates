@@ -1,4 +1,4 @@
-name: Template - Execute Ansible Role
+name: Standard Ansible Workflow
 
 on:
   workflow_call:
@@ -15,20 +15,32 @@ on:
         description: Ansible Verbose Logging Enabled
         default: 'false'
         required: false
-      site:
+      runs-on:
         type: string
         description: Site used for job execution on non multisite jobs
         default: 'london'
+      checkout_vault:
+        type: string
+        description: Checkout ansible-vault repository
+        default: 'true'
+        required: false
+      azure_login:
+        type: string
+        description: Azure Login Required
+        default: 'false'
+        required: false
     secrets:
-      sudo_password:
-      mastertoken:
+      github_pat:
+      ansible_vault_password:
       arm_client_id:
+        required: false
       arm_client_secret:
+        required: false
       arm_tenant_id:
-
+        required: false
 jobs:
   ansible:
-    runs-on: "${{ inputs.site }}"
+    runs-on: "${{ inputs.runs-on }}"
     name: "${{ inputs.ansible_playbook }}"
     defaults:
       run:
@@ -50,13 +62,14 @@ jobs:
           repository: 'epichouse/ansible-core'
         if: ${{ github.event.repository.name != 'ansible-core' }}
 
-      - name: Checkout Repository (bash-scripts)
+      - name: Checkout Repository (ansible-vault)
         uses: actions/checkout@v4
         with:
-          path: bash-scripts
+          path: ansible-vault
           token: ${{secrets.mastertoken}}
           ref: 'main'
-          repository: 'epichouse/bash-scripts'
+          repository: 'epichouse/ansible-vault'
+        if: ${{ inputs.checkout_vault == 'true' }}
 
       - name: Checkout Repository (ansible-roles)
         uses: actions/checkout@v4
@@ -73,11 +86,19 @@ jobs:
           -t ${{ secrets.ARM_TENANT_ID }} \
           -u ${{secrets.ARM_CLIENT_ID}} \
           -p ${{ secrets.ARM_CLIENT_SECRET }} \
+        if: ${{ inputs.azure_login == 'true' }}
 
       - name: Enable Verbose Flag
         run: |
           echo "verbose_logs=-vvv" >> $GITHUB_ENV
         if: ${{ inputs.ansible_verbose_logging  == 'true' }}
+
+      - name: Generate Vault Password File
+        run: |
+          echo $PASS > ~/.vault
+        shell: bash
+        env:
+          PASS: ${{ secrets.ansible_vault_password }}
 
       - name: Output Ansible Inventory
         run: |
@@ -88,4 +109,7 @@ jobs:
           ansible-playbook ${{ inputs.ansible_playbook }} \
           ${{ inputs.ansible_additional_parameters }} \
           ${{ env.verbose_logs}} \
-          --extra-vars "ansible_sudo_pass=${{ secrets.SUDO_PASSWORD }}" \
+
+      - name: Cleanup Vault Password File
+        run: rm ~/.vault
+        if: always()
