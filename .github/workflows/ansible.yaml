@@ -30,7 +30,7 @@ on:
         default: 'false'
         required: false
     secrets:
-      github_pat:
+      auth_token:
       ansible_vault_password:
       arm_client_id:
         required: false
@@ -57,7 +57,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           path: ansible-core
-          token: ${{secrets.github_pat}}
+          token: ${{secrets.auth_token}}
           ref: 'main'
           repository: 'epichouse/ansible-core'
         if: ${{ github.event.repository.name != 'ansible-core' }}
@@ -66,7 +66,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           path: ansible-vault
-          token: ${{secrets.github_pat}}
+          token: ${{secrets.auth_token}}
           ref: 'main'
           repository: 'epichouse/ansible-vault'
         if: ${{ inputs.checkout_vault == 'true' }}
@@ -75,7 +75,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           path: ansible-roles
-          token: ${{secrets.github_pat}}
+          token: ${{secrets.auth_token}}
           ref: 'main'
           repository: 'epichouse/ansible-roles'
 
