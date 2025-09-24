@@ -59,6 +59,14 @@ jobs:
         uses: actions/checkout@v4
         with:
           path: "${{ github.event.repository.name }}"
+      - name: Checkout Repository (ansible-core)
+        uses: actions/checkout@v4
+        with:
+          path: ansible-core
+          token: ${{secrets.auth_token}}
+          ref: 'main'
+          repository: 'epichouse/ansible-core'
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
       - name: Azure Login
