@@ -74,7 +74,7 @@ jobs:
           path: '.'
           isAbsolutePath: false
           file: '.vault'
-          content: ${{ secrets.ANSIBLE_VAULT_PASSWORD }}
+          content: ${{ secrets.ansible_vault_password }}
 
 
       - name: Setup Terraform
