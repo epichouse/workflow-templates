@@ -62,10 +62,10 @@ jobs:
           path: "${{ github.event.repository.name }}"
 
       - name: Checkout Repository (ansible-core)
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
-          path: ansible-core
-          token: ${{ secrets.mastertoken }}
+          path: 'ansible-core'
+          token: '${{ secrets.mastertoken }}'
           ref: 'main'
           repository: 'epichouse/ansible-core'
 
