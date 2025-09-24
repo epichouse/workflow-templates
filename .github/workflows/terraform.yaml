@@ -46,6 +46,7 @@ jobs:
   plan:
     name: Terraform Plan
     runs-on: ${{ inputs.site }}
+    environment: epichouse
     defaults:
       run:
         working-directory: "${{ github.event.repository.name }}"
