@@ -40,6 +40,7 @@ on:
       arm_client_secret:
       arm_subscription_id:
       arm_tenant_id:
+      ansible_vault_password:
 
 jobs:
   plan:
@@ -66,6 +67,15 @@ jobs:
           token: ${{secrets.auth_token}}
           ref: 'main'
           repository: 'epichouse/ansible-core'
+
+      - name: Populate Password File
+        uses: 1arp/create-a-file-action@0.4.5
+        with:
+          path: '.'
+          isAbsolutePath: false
+          file: '.vault'
+          content: ${{ secrets.ANSIBLE_VAULT_PASSWORD }}
+
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
