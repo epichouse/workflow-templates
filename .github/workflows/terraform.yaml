@@ -75,9 +75,6 @@ jobs:
         shell: bash
         env:
           PASS: ${{ secrets.ANSIBLE_VAULT_PASSWORD }}
-
-      - name: List files
-        run: ls -la
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
       - name: Azure Login
@@ -134,6 +131,11 @@ jobs:
         uses: actions/checkout@v4
         with:
           path: "${{ github.event.repository.name }}"
+      - name: Populate Vault Password File
+        run: echo $PASS > ~/.vault
+        shell: bash
+        env:
+          PASS: ${{ secrets.ANSIBLE_VAULT_PASSWORD }}
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
       - name: Download Plan
