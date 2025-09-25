@@ -70,13 +70,12 @@ jobs:
           ref: 'main'
           repository: 'epichouse/ansible-core'
 
-      - name: Create Vault Password File
-        run: |
-            touch .vault
-            echo ANSIBLE_VAULT_PASSWORD >> .vault
+      - name: Populate Vault Password File
+        run: echo $PASS > ~/.vault
         shell: bash
         env:
-          ANSIBLE_VAULT_PASSWORD: ${{secrets.ANSIBLE_VAULT_PASSWORD}}
+          PASS: ${{ secrets.ANSIBLE_VAULT_PASSWORD }}
+
       - name: List files
         run: ls -la
       - name: Setup Terraform
