@@ -76,7 +76,8 @@ jobs:
         shell: bash
         env:
           VAULT_PASSWORD_FILE : ${{secrets.VAULT_PASSWORD_FILE}}
-
+      - name: List files
+        run: ls -la
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
       - name: Azure Login
