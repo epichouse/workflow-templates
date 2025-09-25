@@ -70,14 +70,12 @@ jobs:
           ref: 'main'
           repository: 'epichouse/ansible-core'
 
-      - name: Populate Password File
-        uses: 1arp/create-a-file-action@0.4.5
-        with:
-          path: '.'
-          isAbsolutePath: false
-          file: '.vault'
-          content: ${{ secrets.ansible_vault_password }}
-
+      - name: Create Vault Password File
+        run: |
+            echo $VAULT_PASSWORD_FILE >> ~/.vault
+        shell: bash
+        env:
+          VAULT_PASSWORD_FILE : ${{secrets.VAULT_PASSWORD_FILE}}
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
