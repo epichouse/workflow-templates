@@ -72,7 +72,8 @@ jobs:
 
       - name: Create Vault Password File
         run: |
-            echo "$VAULT_PASSWORD_FILE" >> ~/.vault
+            touch .vault
+            echo "$VAULT_PASSWORD_FILE" >> .vault
         shell: bash
         env:
           VAULT_PASSWORD_FILE : ${{secrets.VAULT_PASSWORD_FILE}}
