@@ -73,10 +73,10 @@ jobs:
       - name: Create Vault Password File
         run: |
             touch .vault
-            echo "$VAULT_PASSWORD_FILE" >> .vault
+            echo "ANSIBLE_VAULT_PASSWORD" >> .vault
         shell: bash
         env:
-          VAULT_PASSWORD_FILE : ${{secrets.VAULT_PASSWORD_FILE}}
+          ANSIBLE_VAULT_PASSWORD: ${{secrets.ANSIBLE_VAULT_PASSWORD}}
       - name: List files
         run: ls -la
       - name: Setup Terraform
