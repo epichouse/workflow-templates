@@ -115,6 +115,7 @@ jobs:
   apply:
     name: Terraform Apply
     runs-on: ${{ inputs.site }}
+    environment: epichouse
     defaults:
       run:
         working-directory: "${{ github.event.repository.name }}"
