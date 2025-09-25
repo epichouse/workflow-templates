@@ -62,13 +62,13 @@ jobs:
         with:
           path: "${{ github.event.repository.name }}"
 
-      - name: Checkout Repository (ansible-core)
+      - name: Checkout Repository (ansible-vault)
         uses: actions/checkout@v5
         with:
-          path: 'ansible-core'
+          path: 'ansible-vault'
           token: '${{ secrets.mastertoken }}'
           ref: 'main'
-          repository: 'epichouse/ansible-core'
+          repository: 'epichouse/ansible-vault'
 
       - name: Populate Vault Password File
         run: echo $PASS > ~/.vault
